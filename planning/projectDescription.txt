@@ -1,0 +1,32 @@
+Venture Vector: Your Personalized Travel Guide
+Description: VentureVector gives you the freedom to choose your own adventure and the tools to make it happen. Our AI chatbot assists you in planning, while Google Maps shows you the way. Explore the world at your own pace!
+
+github Repo:
+https://github.com/alexandervice/venture-vector
+
+Group Members:
+Alex - 
+Nandor - 
+
+MVP:
+- Single Page Applicaiton
+- Landing Page
+- Login/Registration with authentication
+- CRUD for Trips
+- Trip details
+    - Starting Location (preslected options?)
+    - Tip Loation (preselected options?)
+    - Duration (start data / end date)
+    - # of travellers
+    - Hotel Type (cheap, medium, nice)
+    - Food Type (cheap, medium, nice)
+- ChatGPT generated travel itinerary
+- Google Maps directions to your destination
+
+Bonus:
+- Dark mode / light mode (all pictures change to match mode)
+- Allow for user to input any starting Location
+- Allow for user to input any trip location (with an image that will appear matching the location)
+- Allow user to input a budget and show how much of their budget is spent on various parts of the trip (travel, lodging, food, fun, etc)
+- Incorporate typescript
+- Deploy on AWS
