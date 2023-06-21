@@ -5,19 +5,19 @@ github Repo:
 https://github.com/alexandervice/venture-vector
 
 Group Members:
-Alex - 
-Nandor - 
+Alex - Login/Registration + Authorization, API
+Nandor - Trip CRUD + Landing page + Routes
 
 MVP:
-- Single Page Applicaiton
+- Single Page Application
 - Landing Page
 - Login/Registration with authentication
 - CRUD for Trips
 - Trip details
     - Starting Location (preslected options?)
-    - Tip Loation (preselected options?)
-    - Duration (start data / end date)
-    - # of travellers
+    - Tip Loation (preselected options? with images)
+    - Duration (start date / end date)
+    - # of travelers
     - Hotel Type (cheap, medium, nice)
     - Food Type (cheap, medium, nice)
 - ChatGPT generated travel itinerary
@@ -25,6 +25,8 @@ MVP:
 
 Bonus:
 - Dark mode / light mode (all pictures change to match mode)
+- Add a weather page to see the weather for your trip
+- Add a global clock to see the timezone for your trip
 - Allow for user to input any starting Location
 - Allow for user to input any trip location (with an image that will appear matching the location)
 - Allow user to input a budget and show how much of their budget is spent on various parts of the trip (travel, lodging, food, fun, etc)
