@@ -13,14 +13,11 @@ app.use(cookieParser());
 app.use(cors({credentials: true, origin: originenv}));
 app.use(express.json(), express.urlencoded({ extended: true }));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-app.use("/images", express.static("images"));
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing form data
+app.set("view engine", "ejs"); // configures view engine to render dynamic content
 
 require("./routes/user.routes")(app);
-require("./routes/character.routes")(app);
-require("./routes/documentation.routes")(app);
-require("./routes/openAi.routes")(app);
+require("./routes/chatGPT.routes")(app);
 
 
 app.listen(port, () => console.log(`Listening on port: ${port}`) );
