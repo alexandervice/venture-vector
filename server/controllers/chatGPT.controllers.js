@@ -1,4 +1,5 @@
 const { Configuration, OpenAIApi } = require("openai");
+// make sure to get the api key and declare it before running locally
 const apiKey = process.env.CHAT_GPT_API_KEY;
 
 const configuration = new Configuration({

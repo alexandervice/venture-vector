@@ -25,11 +25,11 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Password is required"],
     minlength: [6, "Password must be at least 6 characters"]
   },
-  // Need to update this for how we want to store trips
-  trips: {
-    type: Array,
-    default: []
-  }
+  // We can have trips saved in the user or the user saved for each trip or both
+  trips: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Trips"
+  }]
 }, {timestamps: true});
 
 
