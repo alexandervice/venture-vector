@@ -6,11 +6,12 @@ const PlaceSchema =new mongoose.Schema({
   address: Text,
   placeId: Text,
   mapLocation : [{
-    latitude: String,
-    longitude: String
+    latitude: Number,
+    longitude: Number
   }],
-  price: String, // this can either be "$$$" or 3 ~ meaning we can have this as either a String or a Number
-  rating: Number
+  price: Number, // 1 through 5, with 1 = "$" and 5 = "$$$$$"
+  rating: Number,
+  photos: Array
 })
 
 const TripSchema = mongoose.Schema({

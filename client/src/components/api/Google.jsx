@@ -1,38 +1,57 @@
 import {useState} from 'react'
 import axios from 'axios';
 
-const Google = (props) => {
-  const {tripData, setTripData} = props
-  const [loading, setLoading] = useState(false);
-  const [messageReceived, setMessageReceieved] = useState(false);
-  
+const Google = () => {
 
-  const getPlaceIds = async () => {
-    setLoading(true);
-    const query = [tripData.hotel.address]
-    for(let i=0;i<tripData.restaurants.length; i++) {
+  const getPlaceDetails = async (placeId) => {
+    try {
+      // make sure to create a .env file and set:
+      // REACT_APP_API_URL = "http://localhost:8000"
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/details`, placeId);
 
-    }
-    const getOnePlaceId = async (address) => {
-      try {
-        // make sure to create a .env file and set:
-        // REACT_APP_API_URL = "http://localhost:8000"
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/search`, address);
-  
-        // Handle the response from the backend, such as displaying the result in the UI
-        // console.log(response.data.text)
-        const placeId = response.data;
-        setTripData({ ...tripData, itinerary: chatGPTResponse.itineraryDescription, hotel: chatGPTResponse.hotel, restaurants: chatGPTResponse.restaurants, otherPlaces: chatGPTResponse.places });
-        setLoading(false);
-        setMessageReceieved(true);
-      } catch (error) {
-        // Handle errors, such as displaying an error message to the user
-        console.error(error);
-        setLoading(false);
-        setMessageReceieved(false);
-      }
+      // console.log(response)
+      const placeDetails = {
+        details: response.details,
+        photos: []
+      };
+      placeDetails.photos = placeDetails.details.photos.map(photo => ({
+        photo_reference: photo.photo_reference,
+      }))
+      return placeDetails
+    } catch (error) {
+      // Handle errors, such as displaying an error message to the user
+      console.error(error);
     }
   };
+
+  const getPlacePhoto = async (photo_reference) => {
+    try {
+      // make sure to create a .env file and set:
+      // REACT_APP_API_URL = "http://localhost:8000"
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/photo`, photo_reference);
+
+      return response
+    } catch (error) {
+      // Handle errors, such as displaying an error message to the user
+      console.error(error);
+    }
+  }
+
+  const getOnePlaceId = async (nameAddress) => {
+    try {
+      // make sure to create a .env file and set:
+      // REACT_APP_API_URL = "http://localhost:8000"
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/search`, nameAddress);
+
+      // console.log(response)
+      const placeId = response.place_id;
+      return placeId
+    } catch (error) {
+      // Handle errors, such as displaying an error message to the user
+      console.error(error);
+    }
+  }
 }
+
 
 export default Google

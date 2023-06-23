@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
+import {getOnePlaceId, getPlaceDetails, getPlacePhoto} from './Google';
 import axios from 'axios';
+import { findOnePlaceDetails } from '../../../../server/controllers/google.controllers';
 
 const ChatGPT = (props) => {
   const {tripData, setTripData} = props
@@ -8,7 +10,7 @@ const ChatGPT = (props) => {
 
   const messageData = `Create an itinerary for a trip to: (${tripData.location}) from the dates of: (${tripData.dateStart} - ${tripData.dateEnd}) for ${tripData.travelerNumber} travelers, and a hotel price that is: ${tripData.budget} a food price that is: ${tripData.budget}. Please give ideas of things to do and places to see. Please export this as a JSON with the places written in a way the google places API can search them {itineraryDescription: (describe lots of fun things to do or places to see), hotel: {name:, address:}, restaurants: [{name:, address: }] places: [{name:, address: }]}`
   
-  const sendMessageToChatGPT = async () => {
+  const chatgptWithGoogleResponse = async () => {
     try {
       setLoading(true);
       // make sure to create a .env file and set:
@@ -17,27 +19,85 @@ const ChatGPT = (props) => {
 
       // Handle the response from the backend, such as displaying the result in the UI
       // console.log(response.data.text)
-
+      if(JSON.parse(response.data.text)) {
+        throw new Error('Invalid response data');
+      }
+      const chatGPTResponse = JSON.parse(response.data.text);
+      setTripData({ ...tripData, itinerary: chatGPTResponse.itineraryDescription})
       // Reformat this code to bring in the google API functions and pull all the info from one function. Split it up by thing (hotels, restaurants, otherPlaces). Start by getting the place_id, then find the place details (Basic Data, Atmosphere Data, and Photo). Then append all of that in the setTripData
 
-      const chatGPTResponse = JSON.parse(response.data.text);
+      // hotel
+      const hotelId = getOnePlaceId(`${chatGPTResponse.hotel.name}, ${chatGPTResponse.hotel.address}`)
+      const hotelDetails = findOnePlaceDetails(hotelId)
       setTripData({ ...tripData, 
-        itinerary: chatGPTResponse.itineraryDescription, 
         hotel: {
-          name: chatGPTResponse.hotel.name,
-          address: chatGPTResponse.hotel.address
-        }, 
-        restaurants: chatGPTResponse.restaurants.map(restaurant => ({
-          ...restaurant,
-          name: restaurant.name, // Add the restaurant name property
-          address: restaurant.address // Add the restaurant address property
-        })),
-        otherPlaces: chatGPTResponse.places.map(place => ({
-          ...place,
-          name: place.name, // Add the place name property
-          address: place.address // Add the place address property
-        }))
+          name: hotelDetails.details.name,
+          description: hotelDetails.details.editorial_summary.overview,
+          address: hotelDetails.details.formatted_address,
+          placeId: hotelId,
+          mapLocation: {
+            latitude: hotelDetails.details.geometry.location.lat,
+            longitude: hotelDetails.details.geometry.location.lng
+          },
+          price: hotelDetails.details.price_level,
+          rating: hotelDetails.details.rating,
+          photos: hotelDetails.photos
+        }
       })
+      // --------------------------------------------------------------------------------
+      // restaurants
+      const restaurantDetailsPromises = chatGPTResponse.restaurants.map(async (restaurant) => {
+        const restaurantId = getOnePlaceId(`${restaurant.name}, ${restaurant.address}`);
+        const restaurantDetails = await findOnePlaceDetails(restaurantId);
+        return {
+          name: restaurantDetails.details.name,
+          description: restaurantDetails.details.editorial_summary.overview,
+          address: restaurantDetails.details.formatted_address,
+          placeId: restaurantId,
+          mapLocation: {
+            latitude: restaurantDetails.details.geometry.location.lat,
+            longitude: restaurantDetails.details.geometry.location.lng,
+          },
+          price: restaurantDetails.details.price_level,
+          rating: restaurantDetails.details.rating,
+          photos: restaurantDetails.photos,
+        };
+      });
+      
+      const restaurantDetails = await Promise.all(restaurantDetailsPromises);
+      
+      setTripData({
+        ...tripData,
+        restaurants: restaurantDetails,
+      });
+      // --------------------------------------------------------------------------------
+      // Other Places
+      const otherPlaceDetailsPromises = chatGPTResponse.otherPlaces.map(async (place) => {
+        const placeId = getOnePlaceId(`${place.name}, ${place.address}`);
+        const placeDetails = await findOnePlaceDetails(placeId);
+        return {
+          name: placeDetails.details.name,
+          description: placeDetails.details.editorial_summary.overview,
+          address: placeDetails.details.formatted_address,
+          placeId: placeId,
+          mapLocation: {
+            latitude: placeDetails.details.geometry.location.lat,
+            longitude: placeDetails.details.geometry.location.lng,
+          },
+          price: placeDetails.details.price_level,
+          rating: placeDetails.details.rating,
+          photos: placeDetails.photos,
+        };
+      });
+      
+      const otherPlaceDetails = await Promise.all(otherPlaceDetailsPromises);
+      
+      setTripData({
+        ...tripData,
+        otherPlaces: otherPlaceDetails,
+      });
+      // --------------------------------------------------------------------------------
+
       setLoading(false);
       setMessageReceieved(true);
     } catch (error) {
@@ -57,7 +117,7 @@ const ChatGPT = (props) => {
       <div>
         {messageReceived ?
         <button disabled type='button'></button> :
-        <button type='button' onClick={() => sendMessageToChatGPT()}>Create Itinerary</button>
+        <button type='button' onClick={() => chatgptWithGoogleResponse()}>Plan My Trip</button>
         }
       </div>
       }
