@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
-import {getOnePlaceId, getPlaceDetails, getPlacePhoto} from './Google';
+import {getOnePlaceId, getPlaceDetails} from './Google';
 import axios from 'axios';
-import { findOnePlaceDetails } from '../../../../server/controllers/google.controllers';
 
 const ChatGPT = (props) => {
   const {tripData, setTripData} = props
@@ -28,7 +27,7 @@ const ChatGPT = (props) => {
 
       // hotel
       const hotelId = getOnePlaceId(`${chatGPTResponse.hotel.name}, ${chatGPTResponse.hotel.address}`)
-      const hotelDetails = findOnePlaceDetails(hotelId)
+      const hotelDetails = getPlaceDetails(hotelId)
       setTripData({ ...tripData, 
         hotel: {
           name: hotelDetails.details.name,
@@ -48,7 +47,7 @@ const ChatGPT = (props) => {
       // restaurants
       const restaurantDetailsPromises = chatGPTResponse.restaurants.map(async (restaurant) => {
         const restaurantId = getOnePlaceId(`${restaurant.name}, ${restaurant.address}`);
-        const restaurantDetails = await findOnePlaceDetails(restaurantId);
+        const restaurantDetails = await getPlaceDetails(restaurantId);
         return {
           name: restaurantDetails.details.name,
           description: restaurantDetails.details.editorial_summary.overview,
@@ -74,7 +73,7 @@ const ChatGPT = (props) => {
       // Other Places
       const otherPlaceDetailsPromises = chatGPTResponse.otherPlaces.map(async (place) => {
         const placeId = getOnePlaceId(`${place.name}, ${place.address}`);
-        const placeDetails = await findOnePlaceDetails(placeId);
+        const placeDetails = await getPlaceDetails(placeId);
         return {
           name: placeDetails.details.name,
           description: placeDetails.details.editorial_summary.overview,
