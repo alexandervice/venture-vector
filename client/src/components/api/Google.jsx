@@ -1,9 +1,21 @@
-import {useState} from 'react'
 import axios from 'axios';
 
-const Google = () => {
+  export const getOnePlaceId = async (nameAddress) => {
+    try {
+      // make sure to create a .env file and set:
+      // REACT_APP_API_URL = "http://localhost:8000"
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/search`, nameAddress);
 
-  const getPlaceDetails = async (placeId) => {
+      // console.log(response)
+      const placeId = response.place_id;
+      return placeId
+    } catch (error) {
+      // Handle errors, such as displaying an error message to the user
+      console.error(error);
+    }
+  };
+
+  export const getPlaceDetails = async (placeId) => {
     try {
       // make sure to create a .env file and set:
       // REACT_APP_API_URL = "http://localhost:8000"
@@ -24,7 +36,7 @@ const Google = () => {
     }
   };
 
-  const getPlacePhoto = async (photo_reference) => {
+  export const getPlacePhoto = async (photo_reference) => {
     try {
       // make sure to create a .env file and set:
       // REACT_APP_API_URL = "http://localhost:8000"
@@ -35,23 +47,7 @@ const Google = () => {
       // Handle errors, such as displaying an error message to the user
       console.error(error);
     }
-  }
-
-  const getOnePlaceId = async (nameAddress) => {
-    try {
-      // make sure to create a .env file and set:
-      // REACT_APP_API_URL = "http://localhost:8000"
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/search`, nameAddress);
-
-      // console.log(response)
-      const placeId = response.place_id;
-      return placeId
-    } catch (error) {
-      // Handle errors, such as displaying an error message to the user
-      console.error(error);
-    }
-  }
-}
+  };
 
 
-export default Google
+

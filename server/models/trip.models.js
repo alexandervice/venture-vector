@@ -11,7 +11,7 @@ const PlaceSchema =new mongoose.Schema({
   }],
   price: Number, // 1 through 5, with 1 = "$" and 5 = "$$$$$"
   rating: Number,
-  photos: Array
+  photos: Array // this will just have a reference to a photo and we will need to perform an api call to get the actual pictures on the front-end
 })
 
 const TripSchema = mongoose.Schema({
