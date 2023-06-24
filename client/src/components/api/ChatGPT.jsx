@@ -7,7 +7,7 @@ const ChatGPT = (props) => {
   const [loading, setLoading] = useState(false);
   const [messageReceived, setMessageReceieved] = useState(false);
 
-  const messageData = `Create an itinerary for a trip to: (${tripData.location}) from the dates of: (${tripData.dateStart} - ${tripData.dateEnd}) for ${tripData.travelerNumber} travelers, and a hotel price that is: ${tripData.budget} a food price that is: ${tripData.budget}. Please give ideas of things to do and places to see. Please export this as a JSON with the places written in a way the google places API can search them {itineraryDescription: (describe lots of fun things to do or places to see), hotel: {name:, address:}, restaurants: [{name:, address: }] places: [{name:, address: }]}`
+  const messageData = {"message" : `Create an itinerary for a trip to: (${tripData.location}) from the dates of: (${tripData.startDate} - ${tripData.endDate}) for ${tripData.travelerNumber} travelers, and a trip budget that is: ${tripData.budget} $ out of 5 $. Please give ideas of things to do and places to see. Please export this as a JSON with the places written in a way the google places API can search them.. {itineraryDescription: '(Please write out as a paragraph what the traveler should do on their trip)', hotel: {name: '', address: ''}, restaurants: [{name: '', address: '' }] places: [{name: '', address: ''}]}`}
   
   const chatgptWithGoogleResponse = async () => {
     try {
@@ -16,18 +16,20 @@ const ChatGPT = (props) => {
       // REACT_APP_API_URL = "http://localhost:8000"
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/chat`, messageData, {withCredentials: true});
 
-      // Handle the response from the backend, such as displaying the result in the UI
-      // console.log(response.data.text)
-      if(JSON.parse(response.data.text)) {
+      if(!JSON.parse(response.data.text)) {
         throw new Error('Invalid response data');
       }
       const chatGPTResponse = JSON.parse(response.data.text);
+      // console.log(chatGPTResponse.itineraryDescription)
       setTripData({ ...tripData, itinerary: chatGPTResponse.itineraryDescription})
       // Reformat this code to bring in the google API functions and pull all the info from one function. Split it up by thing (hotels, restaurants, otherPlaces). Start by getting the place_id, then find the place details (Basic Data, Atmosphere Data, and Photo). Then append all of that in the setTripData
 
       // hotel
-      const hotelId = getOnePlaceId(`${chatGPTResponse.hotel.name}, ${chatGPTResponse.hotel.address}`)
-      const hotelDetails = getPlaceDetails(hotelId)
+      const hotelId = await getOnePlaceId(`${chatGPTResponse.hotel.name}, ${chatGPTResponse.hotel.address}`)
+      if(!hotelId) {
+        throw new Error('Google API Failure');
+      }
+      const hotelDetails = await getPlaceDetails(hotelId)
       setTripData({ ...tripData, 
         hotel: {
           name: hotelDetails.details.name,
@@ -46,7 +48,7 @@ const ChatGPT = (props) => {
       // --------------------------------------------------------------------------------
       // restaurants
       const restaurantDetailsPromises = chatGPTResponse.restaurants.map(async (restaurant) => {
-        const restaurantId = getOnePlaceId(`${restaurant.name}, ${restaurant.address}`);
+        const restaurantId = await getOnePlaceId(`${restaurant.name}, ${restaurant.address}`);
         const restaurantDetails = await getPlaceDetails(restaurantId);
         return {
           name: restaurantDetails.details.name,
@@ -72,7 +74,7 @@ const ChatGPT = (props) => {
       // --------------------------------------------------------------------------------
       // Other Places
       const otherPlaceDetailsPromises = chatGPTResponse.otherPlaces.map(async (place) => {
-        const placeId = getOnePlaceId(`${place.name}, ${place.address}`);
+        const placeId = await getOnePlaceId(`${place.name}, ${place.address}`);
         const placeDetails = await getPlaceDetails(placeId);
         return {
           name: placeDetails.details.name,

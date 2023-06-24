@@ -1,8 +1,8 @@
 const GoogleController = require("../controllers/google.controllers");
-const {authenticate} = require('../config/jwt.config');
+// const {authenticate} = require('../config/jwt.config');
 
 module.exports = app => {
-  app.get("/places/search", authenticate, GoogleController.findOnePlaceId);
-  app.get("/places/details", authenticate, GoogleController.findOnePlaceDetails);
-  app.get("/places/photo", authenticate, GoogleController.findOnePlacePhoto);
+  app.post("/places/search", GoogleController.findOnePlaceId);
+  app.post("/places/details", GoogleController.findOnePlaceDetails);
+  app.post("/places/photo", GoogleController.findOnePlacePhoto);
 }
