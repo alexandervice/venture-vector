@@ -14,15 +14,44 @@ const ChatGPT = (props) => {
       setLoading(true);
       // make sure to create a .env file and set:
       // REACT_APP_API_URL = "http://localhost:8000"
+      
+      // City
+      const cityId = await getOnePlaceId(tripData.location)
+      if(!cityId) {
+        throw new Error('Invalid City');
+      }
+      const cityDetails = await getPlaceDetails(cityId)
+      if(!cityDetails) {
+        throw new Error('Google API Failure');
+      }
+      setTripData(prevState => ({
+        ...prevState, 
+        city: {
+          name: cityDetails.details.name,
+          placeId: cityId,
+          mapLocation: {
+            latitude: cityDetails.details.geometry.location.lat,
+            longitude: cityDetails.details.geometry.location.lng
+          },
+          photos: cityDetails.photos
+        }
+      }));
+
+
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/chat`, messageData, {withCredentials: true});
 
       if(!JSON.parse(response.data.text)) {
         throw new Error('Invalid response data');
       }
       const chatGPTResponse = JSON.parse(response.data.text);
-      // console.log(chatGPTResponse.itineraryDescription)
-      setTripData({ ...tripData, itinerary: chatGPTResponse.itineraryDescription})
-      // Reformat this code to bring in the google API functions and pull all the info from one function. Split it up by thing (hotels, restaurants, otherPlaces). Start by getting the place_id, then find the place details (Basic Data, Atmosphere Data, and Photo). Then append all of that in the setTripData
+      console.log("Chat GPT has responded: ",chatGPTResponse)
+      setTripData(prevState => ({
+        ...prevState,
+        itinerary: chatGPTResponse.itineraryDescription,
+      }));
+      // console.log("itinerary complete",tripData)
+      
+
 
       // hotel
       const hotelId = await getOnePlaceId(`${chatGPTResponse.hotel.name}, ${chatGPTResponse.hotel.address}`)
@@ -30,10 +59,14 @@ const ChatGPT = (props) => {
         throw new Error('Google API Failure');
       }
       const hotelDetails = await getPlaceDetails(hotelId)
-      setTripData({ ...tripData, 
+      if(!hotelDetails) {
+        throw new Error('Google API Failure');
+      }
+      setTripData(prevState => ({
+        ...prevState, 
         hotel: {
           name: hotelDetails.details.name,
-          description: hotelDetails.details.editorial_summary.overview,
+          description: hotelDetails.details.editorial_summary,
           address: hotelDetails.details.formatted_address,
           placeId: hotelId,
           mapLocation: {
@@ -44,59 +77,78 @@ const ChatGPT = (props) => {
           rating: hotelDetails.details.rating,
           photos: hotelDetails.photos
         }
-      })
+      }));
+      // console.log("hotel complete",tripData)
       // --------------------------------------------------------------------------------
       // restaurants
       const restaurantDetailsPromises = chatGPTResponse.restaurants.map(async (restaurant) => {
-        const restaurantId = await getOnePlaceId(`${restaurant.name}, ${restaurant.address}`);
-        const restaurantDetails = await getPlaceDetails(restaurantId);
-        return {
-          name: restaurantDetails.details.name,
-          description: restaurantDetails.details.editorial_summary.overview,
-          address: restaurantDetails.details.formatted_address,
-          placeId: restaurantId,
-          mapLocation: {
-            latitude: restaurantDetails.details.geometry.location.lat,
-            longitude: restaurantDetails.details.geometry.location.lng,
-          },
-          price: restaurantDetails.details.price_level,
-          rating: restaurantDetails.details.rating,
-          photos: restaurantDetails.photos,
-        };
+        try {
+          const restaurantId = await getOnePlaceId(`${restaurant.name}, ${restaurant.address}`);
+          const restaurantDetails = await getPlaceDetails(restaurantId);
+          return {
+            name: restaurantDetails.details.name,
+            description: restaurantDetails.details.editorial_summary,
+            address: restaurantDetails.details.formatted_address,
+            placeId: restaurantId,
+            mapLocation: {
+              latitude: restaurantDetails.details.geometry.location.lat,
+              longitude: restaurantDetails.details.geometry.location.lng,
+            },
+            price: restaurantDetails.details.price_level,
+            rating: restaurantDetails.details.rating,
+            photos: restaurantDetails.photos,
+          };
+        } catch (error) {
+          console.error(`Error retrieving details for restaurant: ${restaurant.name}`);
+          return null; // or handle the error in a way that suits your application
+        }
       });
       
       const restaurantDetails = await Promise.all(restaurantDetailsPromises);
       
-      setTripData({
-        ...tripData,
-        restaurants: restaurantDetails,
-      });
+      // Filter out any null values in the restaurantDetails array
+      const filteredRestaurantDetails = restaurantDetails.filter(restaurant => restaurant !== null);
+      
+      setTripData(prevState => ({
+        ...prevState,
+        restaurants: filteredRestaurantDetails,
+      }));
+      // console.log("restaurants complete",tripData)
       // --------------------------------------------------------------------------------
       // Other Places
-      const otherPlaceDetailsPromises = chatGPTResponse.otherPlaces.map(async (place) => {
-        const placeId = await getOnePlaceId(`${place.name}, ${place.address}`);
-        const placeDetails = await getPlaceDetails(placeId);
-        return {
-          name: placeDetails.details.name,
-          description: placeDetails.details.editorial_summary.overview,
-          address: placeDetails.details.formatted_address,
-          placeId: placeId,
-          mapLocation: {
-            latitude: placeDetails.details.geometry.location.lat,
-            longitude: placeDetails.details.geometry.location.lng,
-          },
-          price: placeDetails.details.price_level,
-          rating: placeDetails.details.rating,
-          photos: placeDetails.photos,
-        };
+      const otherPlaceDetailsPromises = chatGPTResponse.places.map(async (place) => {
+        try {
+          const placeId = await getOnePlaceId(`${place.name}, ${place.address}`);
+          const placeDetails = await getPlaceDetails(placeId);
+          return {
+            name: placeDetails.details.name,
+            description: placeDetails.details.editorial_summary,
+            address: placeDetails.details.formatted_address,
+            placeId: placeId,
+            mapLocation: {
+              latitude: placeDetails.details.geometry.location.lat,
+              longitude: placeDetails.details.geometry.location.lng,
+            },
+            price: placeDetails.details.price_level,
+            rating: placeDetails.details.rating,
+            photos: placeDetails.photos,
+          };
+        } catch (error) {
+          console.error(`Error retrieving details for place: ${place.name}`);
+          return null; // or handle the error in a way that suits your application
+        }
       });
       
       const otherPlaceDetails = await Promise.all(otherPlaceDetailsPromises);
       
-      setTripData({
-        ...tripData,
-        otherPlaces: otherPlaceDetails,
-      });
+      // Filter out any null values in the otherPlaceDetails array
+      const filteredOtherPlaceDetails = otherPlaceDetails.filter(place => place !== null);
+      
+      setTripData(prevState => ({
+        ...prevState,
+        otherPlaces: filteredOtherPlaceDetails,
+      }));
+      // console.log("otherPlaces complete",tripData)
       // --------------------------------------------------------------------------------
 
       setLoading(false);
