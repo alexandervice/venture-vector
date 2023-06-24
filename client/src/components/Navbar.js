@@ -3,7 +3,7 @@ import { useTransition, animated } from 'react-spring';
 import { Link } from 'react-scroll';
 import '../App.css';
 
-const Navbar = ({ activeSection }) => {
+const Navbar = ({ activeSection, user, setUser }) => {
     const [scrollY, setScrollY] = useState(0);
     const [showVertical, setShowVertical] = useState(false);
 
@@ -12,6 +12,11 @@ const Navbar = ({ activeSection }) => {
         setScrollY(currentScrollY);
         setShowVertical(currentScrollY > 0);
     };
+
+    const handleLogout = () => {
+        setUser(false);
+        localStorage.removeItem("usertoken");
+    }
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -37,7 +42,14 @@ const Navbar = ({ activeSection }) => {
                     <Link to='search' spy={true} smooth={true} duration={500}>Search</Link>
                     <Link to='examples' spy={true} smooth={true} duration={500}>Examples</Link>
                     <Link to='about' spy={true} smooth={true} duration={500}>About</Link>
-                    <button>Sign in</button>
+                    {user ? (
+                        <>
+                            <Link to='trips' spy={true} smooth={true} duration={500}>Trips</Link>
+                            <button onClick={handleLogout}>Logout</button>
+                        </>
+                    ) : (
+                        <Link to='login' spy={true} smooth={true} duration={500}>Sign in</Link>
+                    )}
                 </animated.div>
             ))}
         </>
