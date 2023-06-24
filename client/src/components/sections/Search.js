@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Element } from 'react-scroll';
 import ChatGPT from '../api/ChatGPT';
 
@@ -8,14 +8,25 @@ const Search = () => {
     // const [endDate, setEndDate] = useState('');
     // const [travelerNumber, setTravelerNumber] = useState(1);
     // const [budget, setBudget] = useState(3);
+
+    
+
     const [tripData, setTripData] = useState({
       location: "",
       startDate: "",
       endDate: "",
       travelerNumber: 1,
-      budget: 3
+      budget: 3,
+      itinerary: "",
+      city: {},
+      hotel: {},
+      restaurants: [],
+      otherPlaces: []
   })
-    console.log(tripData)
+    
+  useEffect(() => {
+        console.log("Updated", tripData);
+    }, [tripData.otherPlaces]);
     const handleSubmit = (e) => {
         e.preventDefault();
         // SUBMIT 
@@ -59,6 +70,8 @@ const Search = () => {
                         Traveler Number:
                         <input
                             type="number"
+                            min={1}
+                            max={5}
                             value={tripData.travelerNumber}
                             onChange={(e) => setTripData({...tripData, travelerNumber: e.target.value})}
                         />
@@ -68,7 +81,7 @@ const Search = () => {
                         Budget:
                         <input
                             type="range"
-                            min={0}
+                            min={1}
                             max={5}
                             value={tripData.budget}
                             onChange={(e) => setTripData({...tripData, budget: e.target.value})}

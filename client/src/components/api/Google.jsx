@@ -6,8 +6,8 @@ import axios from 'axios';
       // REACT_APP_API_URL = "http://localhost:8000"
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/places/search`, {nameAddress});
 
-      console.log(response)
       const placeId = response.data.place_id;
+      // console.log(placeId)
       return placeId
     } catch (error) {
       // Handle errors, such as displaying an error message to the user
@@ -21,11 +21,12 @@ import axios from 'axios';
       // REACT_APP_API_URL = "http://localhost:8000"
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/places/details`, {placeId}, {withCredentials: true});
 
-      // console.log(response)
       const placeDetails = {
-        details: response.details,
+        details: response.data.details,
         photos: []
       };
+      // console.log(placeDetails)
+
       placeDetails.photos = placeDetails.details.photos.map(photo => ({
         photo_reference: photo.photo_reference,
       }))
