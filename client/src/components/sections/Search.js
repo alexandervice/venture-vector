@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { Element } from 'react-scroll';
+import ChatGPT from '../api/ChatGPT';
 
 const Search = () => {
-    const [location, setLocation] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [travelerNumber, setTravelerNumber] = useState(1);
-    const [budget, setBudget] = useState(3);
-
+    // const [location, setLocation] = useState('');
+    // const [startDate, setStartDate] = useState('');
+    // const [endDate, setEndDate] = useState('');
+    // const [travelerNumber, setTravelerNumber] = useState(1);
+    // const [budget, setBudget] = useState(3);
+    const [tripData, setTripData] = useState({
+      location: "",
+      startDate: "",
+      endDate: "",
+      travelerNumber: 1,
+      budget: 3
+  })
+    console.log(tripData)
     const handleSubmit = (e) => {
         e.preventDefault();
         // SUBMIT 
@@ -24,8 +32,8 @@ const Search = () => {
                         Location:
                         <input
                             type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
+                            value={tripData.location}
+                            onChange={(e) => setTripData({...tripData, location: e.target.value})}
                         />
                     </label>
 
@@ -33,8 +41,8 @@ const Search = () => {
                         Start Date:
                         <input
                             type="date"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
+                            value={tripData.startDate}
+                            onChange={(e) => setTripData({...tripData, startDate: e.target.value})}
                         />
                     </label>
 
@@ -42,8 +50,8 @@ const Search = () => {
                         End Date:
                         <input
                             type="date"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
+                            value={tripData.endDate}
+                            onChange={(e) => setTripData({...tripData, endDate: e.target.value})}
                         />
                     </label>
 
@@ -51,8 +59,8 @@ const Search = () => {
                         Traveler Number:
                         <input
                             type="number"
-                            value={travelerNumber}
-                            onChange={(e) => setTravelerNumber(parseInt(e.target.value))}
+                            value={tripData.travelerNumber}
+                            onChange={(e) => setTripData({...tripData, travelerNumber: e.target.value})}
                         />
                     </label>
 
@@ -62,11 +70,11 @@ const Search = () => {
                             type="range"
                             min={0}
                             max={5}
-                            value={budget}
-                            onChange={(e) => setBudget(parseInt(e.target.value))}
+                            value={tripData.budget}
+                            onChange={(e) => setTripData({...tripData, budget: e.target.value})}
                         />
                     </label>
-
+                    <ChatGPT tripData={tripData} setTripData={setTripData}/>
                     <button type="submit">Submit</button>
                 </form>
 

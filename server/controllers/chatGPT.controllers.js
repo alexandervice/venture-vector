@@ -12,11 +12,13 @@ const openai = new OpenAIApi(configuration);
 module.exports = {
   chatCompletion: async (req, res) => {
     try {
+      // console.log(req.body)
       const { message } = req.body;
       const inputs = [
         // {"role": "system", "content": "You are a helpful assistant."},
         {role: "system", content: message}
       ];
+      // console.log(inputs)
       const answer = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: inputs
