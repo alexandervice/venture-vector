@@ -1,60 +1,110 @@
+/* General Styles */
+body,
+.App {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
 .App {
   text-align: center;
-  text-decoration: none;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-  width: 100vw;
-  overflow: auto;
-  /* dark */
+  max-width: 100vw;
+  min-height: 100vh;
   color: white;
   background-image: url('../public/images/dark.jpg');
-  /* light */
-  /* color: black;
-  background-image: url('../public/images/day.jpg'); */
 }
 
-h1 {
+h1,
+Link,
+a {
   color: white;
 }
 
-/* Navbar */
-.navbar {
-  position: absolute;
-  font-size: larger;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.1);
-  z-index: 1;
+Link,
+a {
+  cursor: pointer;
 }
 
+/* Navbar Styles */
+.navbar {
+  position: fixed;
+  padding: 20px;
+  width: 100vw;
+  font-size: larger;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 7%;
+}
+
+/* Vertical Navbar */
+.vertical {
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  width: 70px;
+  padding: 20px;
+}
+
+/* Logo */
+.venture {
+  color: yellow;
+  position: relative;
+  left: 20px;
+}
+
+.vector {
+  color: green;
+  position: absolute;
+  top: 80px;
+  left: 20px;
+}
+
+
+
+/* Active Link Styles */
 .active {
   color: red;
 }
 
-.navbar-buttons {
-  display: flex;
-  gap: 20px;
-}
-
-.signin-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-/* Section */
+/* Section Styles */
 .section {
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+/* Search Styles */
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.search form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.search label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 5px;
+  text-align: center;
+}
+
+.search button {
+  margin-top: 10px;
 }
