@@ -24,9 +24,12 @@ const Search = () => {
       otherPlaces: []
   })
     
+    // This useEffect can be deleted once we have the trips. It is just to check with a console log if the API's worked
   useEffect(() => {
         console.log("Updated", tripData);
     }, [tripData.otherPlaces]);
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         // SUBMIT 
