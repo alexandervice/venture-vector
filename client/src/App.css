@@ -51,6 +51,36 @@ a {
   padding: 20px;
 }
 
+.dropdown {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 10%;
+  width: 80vw;
+  height: 80vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  overflow: auto;
+  z-index: 2;
+  padding: 1em;
+}
+
+.dropdown.show {
+  display: block;
+}
+
+.dropdown table {
+  width: 100%;
+  color: white;
+  border-collapse: collapse;
+}
+
+.dropdown table th,
+.dropdown table td {
+  border: 1px solid white;
+  padding: 0.5em;
+  text-align: left;
+}
+
 /* Logo */
 .venture {
   color: yellow;

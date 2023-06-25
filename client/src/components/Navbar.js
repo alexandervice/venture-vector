@@ -1,16 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTransition, animated } from 'react-spring';
 import { Link } from 'react-scroll';
+import Trips from './Trips';
 import '../App.css';
 
 const Navbar = ({ activeSection, user, setUser }) => {
     const [scrollY, setScrollY] = useState(0);
     const [showVertical, setShowVertical] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const dropdownRef = useRef(null);
+    const [trips, setTrips] = useState([
+        { address: 'Sydney', startDate: '2023-06-24', endDate: '2023-06-27', travelerNumber: 1, budget: 2000 },
+    ]); //added something to show in the table
 
     const handleScroll = () => {
         const currentScrollY = window.scrollY;
         setScrollY(currentScrollY);
         setShowVertical(currentScrollY > 0);
+    };
+
+    const handleClickOutside = event => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setShowDropdown(false);
+        }
     };
 
     const handleLogout = () => {
@@ -19,8 +31,11 @@ const Navbar = ({ activeSection, user, setUser }) => {
     }
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     const transition = useTransition(showVertical, {
@@ -44,7 +59,8 @@ const Navbar = ({ activeSection, user, setUser }) => {
                     <Link to='about' spy={true} smooth={true} duration={500}>About</Link>
                     {user ? (
                         <>
-                            <Link to='trips' spy={true} smooth={true} duration={500}>Trips</Link>
+                            <Link to='trips' spy={true} smooth={true} duration={500} onClick={() => setShowDropdown(!showDropdown)}>Trips</Link>
+                            {showDropdown && <div ref={dropdownRef}><Trips trips={trips} show={showDropdown} /></div>}
                             <button onClick={handleLogout}>Logout</button>
                         </>
                     ) : (
