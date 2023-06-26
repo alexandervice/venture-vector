@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+// import {useNavigate} from "react-router-dom";
 
-const RegForm = (props) => {
-  const navigate = useNavigate();
+const RegForm = ({setViewSignIn, user, setUser}) => {
+  // const navigate = useNavigate();
   const [errors, setErrors] = useState([]);
-  const setUser = props.setUser
+  // const setUser = props.setUser
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -26,9 +26,9 @@ const RegForm = (props) => {
     axios.post(`${process.env.REACT_APP_API_URL}/api/register`, userInfo, {withCredentials: true})
       .then(res => {
         // instead of using state for the user we can save them in local storage if we would prefer
-        // localStorage.setItem('user', JSON.stringify(res.data.user));
-        setUser(res.data.user)
-        navigate(`/${res.data.user._id}/trips`);
+        localStorage.setItem('usertoken', JSON.stringify(res.data.user));
+        setUser(true)
+        setViewSignIn(false)
       })
       .catch(err => {
         console.log(err)
@@ -40,6 +40,10 @@ const RegForm = (props) => {
         setErrors(errorArray)
         console.log(errors)
       });
+  }
+
+  const handleClose = () => {
+    setViewSignIn(false)
   }
 
   return (
@@ -69,7 +73,9 @@ const RegForm = (props) => {
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input type="password" required className="form-input mb-5 ml-2 py-0 px-1 dark:text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 w-full" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" onChange={changeHandler}/>
           </div>
+          <button onClick={handleClose} className="mr-5 bg-yellow-200 hover:bg-yellow-300 rounded px-1 border-solid border-2 border-yellow-400 dark:text-black">Cancel</button>
           <button type="submit" className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400  dark:bg-green-800 dark:hover:bg-green-700">Register</button>
+          
         </form>
       </div>
     </div>

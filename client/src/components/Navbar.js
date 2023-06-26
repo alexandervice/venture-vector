@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTransition, animated } from 'react-spring';
+import axios from "axios";
 import { Link } from 'react-scroll';
 import Trips from './Trips';
 import '../App.css';
+import Switcher from './ThemeSwitcher';
 
-const Navbar = ({ activeSection, user, setUser }) => {
+
+const Navbar = ({ user, setUser, viewSignIn, setViewSignIn }) => {
     const [scrollY, setScrollY] = useState(0);
     const [showVertical, setShowVertical] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -26,8 +29,18 @@ const Navbar = ({ activeSection, user, setUser }) => {
     };
 
     const handleLogout = () => {
-        setUser(false);
-        localStorage.removeItem("usertoken");
+        axios.post(`${process.env.REACT_APP_API_URL}/api/logout`)
+            .then(res => {
+                setUser(false);
+                localStorage.removeItem("usertoken");
+            })
+            .catch(err=> {
+                console.log(err)
+            })
+        
+    }
+    const handleViewSignIn = () => {
+      viewSignIn ? setViewSignIn(false) :setViewSignIn(true)
     }
 
     useEffect(() => {
@@ -61,11 +74,18 @@ const Navbar = ({ activeSection, user, setUser }) => {
                         <>
                             <Link to='trips' spy={true} smooth={true} duration={500} onClick={() => setShowDropdown(!showDropdown)}>Trips</Link>
                             {showDropdown && <div ref={dropdownRef}><Trips trips={trips} show={showDropdown} /></div>}
-                            <button onClick={handleLogout}>Logout</button>
+                            <button 
+                            className='text-yellow-400' 
+                            onClick={handleLogout}>
+                                Logout
+                            </button>
                         </>
                     ) : (
-                        <Link to='login' spy={true} smooth={true} duration={500}>Sign in</Link>
+                        // <Link to='login' spy={true} smooth={true} onClick={setViewSignIn(true)} duration={500}>Sign in</Link>
+                        <button className='' type='button' onClick={handleViewSignIn}>Login / Register</button>
                     )}
+                    {/* Switcher is the dark/light mode button */}
+                    <Switcher/> 
                 </animated.div>
             ))}
         </>

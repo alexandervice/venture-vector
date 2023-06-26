@@ -25,9 +25,9 @@ const Search = ({ tripData, setTripData }) => {
     // })
 
     // This useEffect can be deleted once we have the trips. It is just to check with a console log if the API's worked
-    useEffect(() => {
-        // console.log("Updated", tripData);
-    }, [tripData.otherPlaces]);
+    // useEffect(() => {
+    //     console.log("Updated", tripData);
+    // }, [tripData.otherPlaces]);
 
 
     const handleSubmit = (e) => {
@@ -91,7 +91,7 @@ const Search = ({ tripData, setTripData }) => {
                         />
                     </label>
                     <ChatGPT tripData={tripData} setTripData={setTripData} />
-                    <button type="submit">Submit</button>
+                    <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Submit</button>
                 </form>
 
 

@@ -28,7 +28,8 @@ const UserSchema = new mongoose.Schema({
   // We can have trips saved in the user or the user saved for each trip or both
   trips: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Trips"
+    ref: "Trips",
+    default: []
   }]
 }, {timestamps: true});
 

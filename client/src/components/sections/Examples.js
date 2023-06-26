@@ -4,13 +4,13 @@ import { Element } from 'react-scroll';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const Examples = ({ tripData }) => {
-    console.log(tripData);
+    // console.log(tripData);
     return (
-        <div>
+        <div className='p-5 bg-zinc-600/50'>
             <h2>Travel Information</h2>
             <Tabs>
                 <TabList>
-                    <Tab>Basic Info + City</Tab>
+                    <Tab>Trip Data</Tab>
                     <Tab>Hotel</Tab>
                     <Tab>Restaurants</Tab>
                     <Tab>Places</Tab>
