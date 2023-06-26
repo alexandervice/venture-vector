@@ -13,6 +13,8 @@ module.exports = {
           fields: 'place_id',
         },
       });
+      // console.log("Google Place Search has responded")
+      res.status(200).send({ place_id: response.data.candidates[0].place_id });
     } catch (error) {
       console.log(error)
       res.status(500).send({ message: error });
