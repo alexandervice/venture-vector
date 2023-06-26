@@ -13,8 +13,6 @@ module.exports = {
           fields: 'place_id',
         },
       });
-      // console.log("Google Place Search has responded")
-      res.status(200).send({place_id : response.data.candidates[0].place_id});
     } catch (error) {
       console.log(error)
       res.status(500).send({ message: error });
@@ -32,13 +30,13 @@ module.exports = {
         },
       });
       // console.log("Google Place Details has responded")
-      res.status(200).send({details : response.data.result});
+      res.status(200).send({ details: response.data.result });
     } catch (error) {
       res.status(500).send({ message: 'Something went wrong.' });
     }
   },
 
-  findOnePlacePhoto: async (req,res) => {
+  findOnePlacePhoto: async (req, res) => {
     try {
       const response = await axios.get('https://maps.googleapis.com/maps/api/place/photo/json', {
         params: {
@@ -47,7 +45,7 @@ module.exports = {
           maxwidth: 400 // the size photo we want to recieve
         },
       });
-  
+
       console.log("Google Place Pictures has responded")
       res.status(200).send(response);
     } catch (error) {
