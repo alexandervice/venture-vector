@@ -1,11 +1,14 @@
-const Trip = require("../models/trip.model");
+const Trip = require("../models/trip.models");
 
 const createTrip = (req, res) => {
+    console.log("createTrip req.body:", req.body);
     Trip.create(req.body)
         .then(newTrip => {
             res.json({ newTrip });
+            console.log("newTrip in createTrip:", newTrip)
         })
         .catch((err) => {
+            console.log(err);
             res.status(400).json({ errors: err.errors });
         });
 };

@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
-const PlaceSchema =new mongoose.Schema({
-  name: Text,
-  description: Text,
-  address: Text,
-  placeId: Text,
-  mapLocation : [{
-    latitude: Number,
-    longitude: Number
-  }],
-  price: Number, // 1 through 5, with 1 = "$" and 5 = "$$$$$"
-  rating: Number,
-  photos: Array // this will just have a reference to a photo and we will need to perform an api call to get the actual pictures on the front-end
+const PlaceSchema = new mongoose.Schema({
+    name: String,
+    description: String,
+    address: String,
+    placeId: String,
+    mapLocation: {
+        latitude: Number,
+        longitude: Number
+    },
+    price: Number, // 1 through 5, with 1 = "$" and 5 = "$$$$$"
+    rating: Number,
+    photos: Array // this will just have a reference to a photo and we will need to perform an api call to get the actual pictures on the front-end
 })
 
 const TripSchema = mongoose.Schema({
@@ -19,31 +19,29 @@ const TripSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    dateStart: {
-        type: Date,
-        required: true,
-    },
-    dateEnd: {
-        type: Date,
-        required: true,
-    },
     location: {
         type: String,
         required: true,
     },
-    reason: {
-        type: String,
+    startDate: {
+        type: Date,
+        required: true,
     },
-    extras: {
-        type: Array,
+    endDate: {
+        type: Date,
+        required: true,
     },
-    itinerary: {
-        type: String,
+    travelerNumber: {
+        type: Number,
+        required: true,
     },
-    city: PlaceSchema,
+    budget: {
+        type: Number,
+        required: true,
+    },
     hotel: PlaceSchema,
-    restaurants : [PlaceSchema],
-    otherPlaces : [PlaceSchema]
+    restaurants: [PlaceSchema],
+    otherPlaces: [PlaceSchema]
 }, { timestamps: true });
 
 module.exports = mongoose.model("Trip", TripSchema);
