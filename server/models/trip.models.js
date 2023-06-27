@@ -39,6 +39,7 @@ const TripSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    city: PlaceSchema,
     hotel: PlaceSchema,
     restaurants: [PlaceSchema],
     otherPlaces: [PlaceSchema]
