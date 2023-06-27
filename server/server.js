@@ -10,15 +10,21 @@ require('dotenv').config();
 require("./config/mongoose.config");
 
 app.use(cookieParser());
-app.use(cors({credentials: true, origin: originenv}));
+app.use(cors({ credentials: true, origin: originenv }));
 app.use(express.json(), express.urlencoded({ extended: true }));
 
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing form data
 app.set("view engine", "ejs"); // configures view engine to render dynamic content
 
+app.use((req, res, next) => {
+    console.log(`${req.method} - ${req.path}`);
+    next();
+});
+
 require("./routes/user.routes")(app);
+require("./routes/trip.routes")(app);
 require("./routes/chatGPT.routes")(app);
 require("./routes/google.routes")(app);
 
 
-app.listen(port, () => console.log(`Listening on port: ${port}`) );
+app.listen(port, () => console.log(`Listening on port: ${port}`));
