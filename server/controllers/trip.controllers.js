@@ -2,7 +2,7 @@ const Trip = require("../models/trip.models");
 
 const createTrip = (req, res) => {
     console.log("createTrip req.body:", req.body);
-    Trip.create(req.body)
+    Trip.create(req.body.tripData)
         .then(newTrip => {
             res.json({ newTrip });
             console.log("newTrip in createTrip:", newTrip)
@@ -14,7 +14,8 @@ const createTrip = (req, res) => {
 };
 
 const getTripsByUser = (req, res) => {
-    Trip.find({ user: req.user._id })
+    console.log(req)
+    Trip.find({ userId: req.user._id })
         .then((allTrips) => {
             res.json(allTrips);
         })

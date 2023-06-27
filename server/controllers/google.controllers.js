@@ -40,10 +40,11 @@ module.exports = {
 
   findOnePlacePhoto: async (req, res) => {
     try {
+      // console.log(req.body.photo_reference)
       const response = await axios.get('https://maps.googleapis.com/maps/api/place/photo/json', {
         params: {
           key: apiKey,
-          place_id: req.body.photo_reference,
+          photo_reference: req.body.photo_reference,
           maxwidth: 400 // the size photo we want to recieve
         },
       });

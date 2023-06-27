@@ -19,7 +19,7 @@ const Trips = ({ user, show }) => {
 
     function updateTrip(id, updatedTrip) {
         fetch(`/api/trips/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
