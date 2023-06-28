@@ -13,10 +13,22 @@ const createTrip = (req, res) => {
         });
 };
 
+const getAllTrips = (req, res) => {
+    Trip.find()
+        .then((allTrips) => {
+            res.json(allTrips);
+        })
+        .catch((err) => {
+            res.status(400).json({ err });
+        });
+};
+
 const getTripsByUser = (req, res) => {
-    console.log(req)
+    console.log("req in trip controller".req)
+    console.log("req.params.userid", req.params.userid)
     Trip.find({ userId: req.user._id })
         .then((allTrips) => {
+            console.log("allTrips in getTripsByUser:", allTrips);
             res.json(allTrips);
         })
         .catch((err) => {
@@ -45,4 +57,4 @@ const deleteTrip = (req, res) => {
             res.status(400).json(err));
 }
 
-module.exports = { createTrip, getTripsByUser, getTripById, updateTrip, deleteTrip };
+module.exports = { createTrip, getAllTrips, getTripsByUser, getTripById, updateTrip, deleteTrip };
