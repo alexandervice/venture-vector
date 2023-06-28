@@ -2,10 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Element } from 'react-scroll';
 import ChatGPT from '../api/ChatGPT';
 import axios from 'axios';
+import AsyncSelect  from 'react-select/async';
+// import cities from 'cities.json';
 
 const Search = ({ tripData, setTripData }) => {
     const user = JSON.parse(localStorage.getItem("usertoken"))
     const [errors, setErrors] = useState([]);
+    const [dateError, setDateError] = useState(null);
+    const [loading, setLoading] = useState(false)
+
+    const checkDates = () => {
+      if (tripData.startDate && tripData.endDate) {
+        if (new Date(tripData.startDate) >= new Date(tripData.endDate)) {
+          setDateError('End Date MUST be after Start Date');
+        } else {
+          setDateError(null);
+        }
+      }
+    };
+    
+    useEffect(() => {
+      checkDates();
+    }, [tripData.startDate, tripData.endDate]);
 
 
     const handleSubmit = (e) => {
@@ -13,7 +31,19 @@ const Search = ({ tripData, setTripData }) => {
 
         axios.post(`${process.env.REACT_APP_API_URL}/api/trips`, { tripData }, { withCredentials: true })
             .then(res => {
-                console.log(res);
+                setTripData(
+                  {location: "",
+                  startDate: "",
+                  endDate: "",
+                  travelerNumber: 1,
+                  budget: 3,
+                  itinerary: "",
+                  city: {},
+                  hotel: {},
+                  restaurants: [],
+                  otherPlaces: []}
+                )
+
             })
             .catch(err => {
                 console.log(err)
@@ -24,90 +54,74 @@ const Search = ({ tripData, setTripData }) => {
                 }
                 setErrors(errorArray)
                 console.log(errors)
-
             })
-        // Nandor, I am not sure what the code below this does (from Alex)
-        // // First, we get the Place ID from Google API
-        // axios.get(`${process.env.REACT_APP_API_URL}/api/google/findPlaceId`, {
-        //     params: {
-        //         nameAddress: tripData.location,
-        //     }
-        // })
-        //     .then(res => {
-        //         const placeId = res.data.place_id;
-        //         console.log('Place ID:', placeId);
-
-        //         // Second, we use the Place ID to get the Place Details from Google API
-        //         return axios.get(`${process.env.REACT_APP_API_URL}/api/google/findPlaceDetails`, {
-        //             params: {
-        //                 placeId: placeId,
-        //             }
-        //         });
-        //     })
-        //     .then(res => {
-        //         const placeDetails = res.data.details;
-        //         console.log('Place Details:', placeDetails);
-
-        //         // We add the data from the Google API to our trip data
-        //         const updatedTripData = {
-        //             ...tripData,
-        //             city: placeDetails.city, // assume these fields exist in placeDetails
-        //             hotel: placeDetails.hotel,
-        //             restaurants: placeDetails.restaurants,
-        //             otherPlaces: placeDetails.otherPlaces
-        //         };
-        //         console.log('Updated Trip Data:', updatedTripData);
-        //         // Finally, we send the updated trip data to our server to save in the database
-        //         return axios.post(`${process.env.REACT_APP_API_URL}/api/trips`, updatedTripData, { withCredentials: true });
-        //     })
-        //     .then(res => {
-        //         console.log('New trip created:', res.data.newTrip);
-        //     })
-        //     .catch(err => {
-        //         console.error('An error occurred while fetching place details or creating the trip:', err);
-        //     });
     }
+
+    const isFormValid = (tripData) => {
+      return tripData.location && tripData.startDate && tripData.endDate && tripData.travelerNumber && tripData.budget;
+    }
+
+    const loadOptions = (inputValue, callback) => {
+      axios.get(`https://api.api-ninjas.com/v1/city?name=${inputValue}`, {headers :{'X-Api-Key': 'vWJbw/eyszMNw5WOX3huCQ==gNII8pAuZxnwQ53x'}})
+        .then(res => {
+          const options = res.data.map(city => ({
+            value: city.name,
+            label: city.name,
+          }));
+          callback(options);
+        });
+    };
+    
 
     return (
         <Element className='section search my-5' name='search'>
             <div className='p-5 bg-zinc-600/50 flex max-w-7xl flex-col'>
-
                 <h2 id='search'>Search page</h2>
 
                 <form onSubmit={handleSubmit}>
-                    <label>
-                        Location:
-                        <input
-                            className='dark:text-black'
-                            type="text"
-                            value={tripData.location}
-                            onChange={(e) => setTripData({ ...tripData, location: e.target.value, user: user })}
-                        />
-                    </label>
+                <label>
+                    Location:
+                    <AsyncSelect  
+                        required
+                        cacheOptions
+                        className='dark:text-black'
+                        loadOptions={loadOptions}
+                        getOptionValue={option => option.value}
+                        getOptionLabel={option => option.label}
+                        onChange={selectedOption => setTripData({ ...tripData, location: selectedOption ? selectedOption.value : '', user: user })}
+                    />
+                </label>
 
                     <label>
                         Start Date:
                         <input
+                            required
                             className='dark:text-black'
                             type="date"
                             value={tripData.startDate}
-                            onChange={(e) => setTripData({ ...tripData, startDate: e.target.value })}
+                            onChange={(e) => {
+                              setTripData({ ...tripData, startDate: e.target.value });
+                            }}
                         />
                     </label>
 
                     <label>
                         End Date:
                         <input
+                            required
                             className='dark:text-black'
                             type="date"
                             value={tripData.endDate}
-                            onChange={(e) => setTripData({ ...tripData, endDate: e.target.value })}
+                            onChange={(e) => {
+                              setTripData({ ...tripData, endDate: e.target.value });
+                            }}
                         />
                     </label>
 
                     <label>
                         Traveler Number:
                         <input
+                            required
                             className='dark:text-black'
                             type="number"
                             min={1}
@@ -120,6 +134,7 @@ const Search = ({ tripData, setTripData }) => {
                     <label>
                         Budget:
                         <input
+                            required
                             type="range"
                             min={1}
                             max={5}
@@ -127,14 +142,15 @@ const Search = ({ tripData, setTripData }) => {
                             onChange={(e) => setTripData({ ...tripData, budget: e.target.value })}
                         />
                     </label>
-                    <ChatGPT tripData={tripData} setTripData={setTripData} />
-                    {user ?
+                    {dateError && <div className="error text-red-400">{dateError}</div>}
+                    {!user && <div className="error text-red-400">Must be Signed In</div>}
+                    {isFormValid(tripData) &&!dateError && <ChatGPT tripData={tripData} setTripData={setTripData} setLoading={setLoading} loading={loading}/>}
+                    {user && isFormValid(tripData) && !dateError && !loading?
                         <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Save Trip</button>
-                        : <button disabled className="bg-red-200 rounded px-1 border-solid border-2 border-red-400 dark:bg-red-800 " type="submit">Please Sign In To Save Trip</button>
+                        : ""
                     }
 
                 </form>
-
 
             </div>
 

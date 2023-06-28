@@ -3,8 +3,7 @@ import {getOnePlaceId, getPlaceDetails} from './Google';
 import axios from 'axios';
 
 const ChatGPT = (props) => {
-  const {tripData, setTripData} = props
-  const [loading, setLoading] = useState(false);
+  const {tripData, setTripData, loading, setLoading} = props
   const [messageReceived, setMessageReceieved] = useState(false);
 
   const messageData = {"message" : `Create an itinerary for a trip to: (${tripData.location}) from the dates of: (${tripData.startDate} - ${tripData.endDate}) for ${tripData.travelerNumber} travelers, and a trip budget that is: ${tripData.budget} $ out of 5 $. Please give ideas of things to do and places to see. Please export this as a JSON with the places written in a way the google places API can search them.. {itineraryDescription: '(Please write out as a paragraph what the traveler should do on their trip)', hotel: {name: '', address: ''}, restaurants: [{name: '', address: '' }] places: [{name: '', address: ''}]}`}
