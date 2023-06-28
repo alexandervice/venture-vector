@@ -10,20 +10,21 @@ const Search = ({ tripData, setTripData }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        axios.post(`${process.env.REACT_APP_API_URL}/api/trips`, {tripData}, {withCredentials: true})
-            .then(res=>{
-              console.log(res);
+
+        axios.post(`${process.env.REACT_APP_API_URL}/api/trips`, { tripData }, { withCredentials: true })
+            .then(res => {
+                console.log(res);
             })
-            .catch(err=> {
-              console.log(err)
-              const errorResponse = err.response.data.errors;
-              const errorArray = [];
-              for (const key of Object.keys(errorResponse)) {
-                errorArray.push(errorResponse[key].message)
-              }
-              setErrors(errorArray)
-              console.log(errors)
+            .catch(err => {
+                console.log(err)
+                const errorResponse = err.response.data.errors;
+                const errorArray = [];
+                for (const key of Object.keys(errorResponse)) {
+                    errorArray.push(errorResponse[key].message)
+                }
+                setErrors(errorArray)
+                console.log(errors)
+
             })
         // Nandor, I am not sure what the code below this does (from Alex)
         // // First, we get the Place ID from Google API
@@ -127,7 +128,9 @@ const Search = ({ tripData, setTripData }) => {
                         />
                     </label>
                     <ChatGPT tripData={tripData} setTripData={setTripData} />
-                    <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Submit</button>
+
+                    <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Save Trip</button>
+
                 </form>
 
 
