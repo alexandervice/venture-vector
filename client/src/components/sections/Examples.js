@@ -10,18 +10,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const Examples = ({ tripData }) => {
     // console.log(tripData);
-    const params = {
-        lazy: true,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-            dynamicBullets: true
-        }
-    }
     return (
         <Element className='section examples' name='examples'>
             <div className='p-5 bg-zinc-600/50 flex max-w-7xl flex-col'>
