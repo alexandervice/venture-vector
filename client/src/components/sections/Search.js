@@ -4,47 +4,26 @@ import ChatGPT from '../api/ChatGPT';
 import axios from 'axios';
 
 const Search = ({ tripData, setTripData }) => {
-
+    const user = JSON.parse(localStorage.getItem("usertoken"))
+    const [errors, setErrors] = useState([]);
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // First, we get the Place ID from Google API
-        axios.get(`${process.env.REACT_APP_API_URL}/api/google/findPlaceId`, {
-            params: {
-                nameAddress: tripData.location,
-            }
-        })
+        axios.post(`${process.env.REACT_APP_API_URL}/api/trips`, { tripData }, { withCredentials: true })
             .then(res => {
-                const placeId = res.data.place_id;
-                console.log('Place ID:', placeId);
-
-                // Second, we use the Place ID to get the Place Details from Google API
-                return axios.get(`${process.env.REACT_APP_API_URL}/api/google/findPlaceDetails`, {
-                    params: {
-                        placeId: placeId,
-                    }
-                });
+                console.log(res);
             })
-            .then(res => {
-                const placeDetails = res.data.details;
-                console.log('Place Details:', placeDetails);
-
-                // We add the data from the Google API to our trip data
-                const updatedTripData = {
-                    ...tripData,
-                    city: placeDetails.city, // assume these fields exist in placeDetails
-                    hotel: placeDetails.hotel,
-                    restaurants: placeDetails.restaurants,
-                    otherPlaces: placeDetails.otherPlaces
-                };
-                console.log('Updated Trip Data:', updatedTripData);
-                // Finally, we send the updated trip data to our server to save in the database
-                return axios.post(`${process.env.REACT_APP_API_URL}/api/trips`, updatedTripData, { withCredentials: true });
-            })
-            .then(res => {
-                console.log('New trip created:', res.data.newTrip);
+            .catch(err => {
+                console.log(err)
+                const errorResponse = err.response.data.errors;
+                const errorArray = [];
+                for (const key of Object.keys(errorResponse)) {
+                    errorArray.push(errorResponse[key].message)
+                }
+                setErrors(errorArray)
+                console.log(errors)
             })
             .catch(err => {
                 console.error('An error occurred while fetching place details or creating the trip:', err);
@@ -107,7 +86,7 @@ const Search = ({ tripData, setTripData }) => {
                         />
                     </label>
                     <ChatGPT tripData={tripData} setTripData={setTripData} />
-                    {/* <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Submit</button> */}
+                    <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Save Trip</button>
                 </form>
 
 

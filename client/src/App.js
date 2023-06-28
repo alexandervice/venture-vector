@@ -5,6 +5,7 @@ import Hero from "./components/sections/Hero";
 import Search from "./components/sections/Search";
 import Examples from "./components/sections/Examples";
 import About from "./components/sections/About";
+import Trips from "./components/Trips";
 import SignIn from "./components/sections/SignIn";
 
 function App() {
@@ -42,11 +43,12 @@ function App() {
     <div className=" App bg-image-light dark:bg-image-dark text-black dark:text-white flex flex-col align-center justify-center text-center">
       <div className="background">
         <Navbar user={user} setUser={setUser} viewSignIn={viewSignIn} setViewSignIn={setViewSignIn} fullPageApi={{ moveTo: (page) => fullPageRef.current && fullPageRef.current.moveTo(page) }} activeSection={activeSection} />
-        {viewSignIn ? <SignIn user={user} setUser={setUser} setViewSignIn={setViewSignIn} viewSignIn={viewSignIn}/> : <div></div>}
+        {viewSignIn ? <SignIn user={user} setUser={setUser} setViewSignIn={setViewSignIn} viewSignIn={viewSignIn} /> : <div></div>}
         <Hero />
         <Search tripData={tripData} setTripData={setTripData} />
         <Examples tripData={tripData} />
         <About />
+        <Trips user={user} show={false} />
       </div>
     </div>
   );

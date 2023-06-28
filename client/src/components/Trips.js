@@ -4,43 +4,43 @@ import dayjs from 'dayjs';
 
 const Trips = ({ user, show }) => {
     const [trips, setTrips] = useState([]);
+    const userO = JSON.parse(localStorage.getItem("usertoken"))
+    console.log("userO:", userO);
 
     useEffect(() => {
-        if (user) {
-            axios.get(`${process.env.REACT_APP_API_URL}/api/trips/user`, { withCredentials: true })
+        console.log("user in trips.js", user);
+        if (user && userO) {
+            axios.get(`${process.env.REACT_APP_API_URL}/api/trips/${userO._id}`, { withCredentials: true })
                 .then(res => {
-                    setTrips(res.data);
+                    console.log('res data in trips.js:', res.data);
+                    setTrips(res.data || []);
                 })
                 .catch(err => {
                     console.log(err);
                 });
         }
-    }, [user]);
+    }, [user, userO?._id]);
 
-    function updateTrip(id, updatedTrip) {
-        fetch(`/api/trips/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedTrip)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Trip updated:', data);
+    const updateTrip = (id, updatedTrip) => {
+        axios
+            .patch(`${process.env.REACT_APP_API_URL}/api/trips/${id}`, updatedTrip, { withCredentials: true })
+            .then(response => {
+                const updatedTrips = trips.map(trip => trip._id === id ? response.data : trip);
+                setTrips(updatedTrips);
+                console.log('Trip updated:', response.data);
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
     }
 
-    function deleteTrip(id) {
-        fetch(`/api/trips/${id}`, {
-            method: 'DELETE'
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Trip deleted:', data);
+    const deleteTrip = (id) => {
+        axios
+            .delete(`${process.env.REACT_APP_API_URL}/api/trips/${id}`, { withCredentials: true })
+            .then(response => {
+                const remainingTrips = trips.filter(trip => trip._id !== id);
+                setTrips(remainingTrips);
+                console.log('Trip deleted:', response.data);
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -52,23 +52,28 @@ const Trips = ({ user, show }) => {
             <table>
                 <thead>
                     <tr>
-                        <th>Address</th>
+                        <th>Location</th>
                         <th>Start Date</th>
-                        <th>Duration</th>
+                        <th>End Date</th>
                         <th>Traveler Number</th>
                         <th>Budget</th>
+                        <th>Hotel</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {trips.map(({ location, startDate, endDate, travelerNumber, budget }) => (
-                        <tr key={location}>
-                            <td>{location}</td>
-                            <td>{startDate}</td>
-                            <td>{dayjs(endDate).diff(startDate, 'day')} days</td>
-                            <td>{travelerNumber} person</td>
-                            <td>${budget}</td>
-                            <td>Edit | Delete</td>
+                    {trips && trips.map((trip) => (
+                        <tr key={trip.location}>
+                            <td>{trip.location}</td>
+                            <td>{trip.startDate}</td>
+                            <td>{trip.endDate}</td>
+                            <td>{trip.travelerNumber} person</td>
+                            <td>${trip.budget}</td>
+                            <td>{trip.hotel.name}</td>
+                            <td>
+                                <button onClick={() => updateTrip(trip._id, updateTrip)}>Edit</button> |
+                                <button onClick={() => deleteTrip(trip._id)}>Delete</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
