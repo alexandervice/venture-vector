@@ -21,19 +21,19 @@ const TripSchema = mongoose.Schema({
     },
     location: {
         type: String,
-        required: true,
+        required: [true, "City is required"],
     },
     startDate: {
         type: Date,
-        required: true,
+        required: [true, "Start Date is required"],
     },
     endDate: {
         type: Date,
-        required: true,
+        required: [true, "End Date is required"],
     },
     travelerNumber: {
         type: Number,
-        required: true,
+        required: [true, "Number of travelers is required"],
     },
     budget: {
         type: Number,

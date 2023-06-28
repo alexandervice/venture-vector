@@ -30,7 +30,7 @@ const Examples = ({ tripData }) => {
                         <p>Budget: {tripData.budget}</p>
                         <p>Itinerary: {tripData.itinerary}</p>
                         {/* <div className='flex flex-wrap justify-center gap-5'> */}
-                        <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={45} infiniteLoop showArrows>
+                        <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                             {tripData.city.photos && tripData.city.photos.map((photo, photoIndex) => (
                                 <div key={photoIndex} className="">
                                     <img
@@ -49,7 +49,7 @@ const Examples = ({ tripData }) => {
                         <p>Description: {tripData.hotel.description}</p>
                         <p>Address: {tripData.hotel.address}</p>
                         <p>Rating: {tripData.hotel.rating}</p>
-                        <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={45} infiniteLoop showArrows>
+                        <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                             {tripData.hotel.photos && tripData.hotel.photos.map((photo, photoIndex) => (
                                 <div key={photoIndex} className=''>
                                     <img
@@ -76,7 +76,7 @@ const Examples = ({ tripData }) => {
                                     <p>Address: {restaurant.address}</p>
                                     <p>Description: {restaurant.description}</p>
                                     <p>Rating: {restaurant.rating}</p>
-                                    <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={45} infiniteLoop showArrows>
+                                    <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                                         { restaurant.photos && restaurant.photos.map((photo, photoIndex) => (
                                             <div key={photoIndex} className=''>
                                                 <img
@@ -106,7 +106,7 @@ const Examples = ({ tripData }) => {
                                     <p>Address: {place.address}</p>
                                     <p>Description: {place.description}</p>
                                     <p>Rating: {place.rating}</p>
-                                    <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={45} infiniteLoop showArrows>
+                                    <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                                         {place.photos && place.photos.map((photo, photoIndex) => (
                                               <div key={photoIndex} className=''>
                                               <img
