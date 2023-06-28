@@ -12,9 +12,6 @@ const Navbar = ({ user, setUser, viewSignIn, setViewSignIn }) => {
     const [showVertical, setShowVertical] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef(null);
-    const [trips, setTrips] = useState([
-        { address: 'Sydney', startDate: '2023-06-24', endDate: '2023-06-27', travelerNumber: 1, budget: 2000 },
-    ]); //added something to show in the table
 
     const handleScroll = () => {
         const currentScrollY = window.scrollY;
@@ -34,13 +31,13 @@ const Navbar = ({ user, setUser, viewSignIn, setViewSignIn }) => {
                 setUser(false);
                 localStorage.removeItem("usertoken");
             })
-            .catch(err=> {
+            .catch(err => {
                 console.log(err)
             })
-        
+
     }
     const handleViewSignIn = () => {
-      viewSignIn ? setViewSignIn(false) :setViewSignIn(true)
+        viewSignIn ? setViewSignIn(false) : setViewSignIn(true)
     }
 
     useEffect(() => {
@@ -73,10 +70,10 @@ const Navbar = ({ user, setUser, viewSignIn, setViewSignIn }) => {
                     {user ? (
                         <>
                             <Link to='trips' spy={true} smooth={true} duration={500} onClick={() => setShowDropdown(!showDropdown)}>Trips</Link>
-                            {showDropdown && <div ref={dropdownRef}><Trips trips={trips} show={showDropdown} /></div>}
-                            <button 
-                            className='text-yellow-400' 
-                            onClick={handleLogout}>
+                            {showDropdown && <div ref={dropdownRef}><Trips user={user} setUser={setUser} show={showDropdown} /></div>}
+                            <button
+                                className='text-yellow-400'
+                                onClick={handleLogout}>
                                 Logout
                             </button>
                         </>
@@ -85,7 +82,7 @@ const Navbar = ({ user, setUser, viewSignIn, setViewSignIn }) => {
                         <button className='' type='button' onClick={handleViewSignIn}>Login / Register</button>
                     )}
                     {/* Switcher is the dark/light mode button */}
-                    <Switcher/> 
+                    <Switcher />
                 </animated.div>
             ))}
         </>

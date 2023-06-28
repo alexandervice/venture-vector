@@ -4,13 +4,12 @@ import dayjs from 'dayjs';
 
 const Trips = ({ user, show }) => {
     const [trips, setTrips] = useState([]);
-    const userO = JSON.parse(localStorage.getItem("usertoken"))
-    console.log("userO:", userO);
 
     useEffect(() => {
         console.log("user in trips.js", user);
-        if (user && userO) {
-            axios.get(`${process.env.REACT_APP_API_URL}/api/trips/${userO._id}`, { withCredentials: true })
+        console.log("trips in trips.js", trips);
+        if (user) {
+            axios.get(`${process.env.REACT_APP_API_URL}/api/trips`, { withCredentials: true })
                 .then(res => {
                     console.log('res data in trips.js:', res.data);
                     setTrips(res.data || []);
@@ -19,7 +18,7 @@ const Trips = ({ user, show }) => {
                     console.log(err);
                 });
         }
-    }, [user, userO?._id]);
+    }, [user]);
 
 
     const updateTrip = (id, updatedTrip) => {
@@ -67,13 +66,14 @@ const Trips = ({ user, show }) => {
                     {trips && trips.map((trip) => (
                         <tr key={trip.location}>
                             <td>{trip.location}</td>
-                            <td>{trip.startDate}</td>
-                            <td>{trip.endDate}</td>
+                            <td>{dayjs(trip.startDate).format('MM/DD/YYYY')}</td>
+                            <td>{dayjs(trip.endDate).format('MM/DD/YYYY')}</td>
                             <td>{trip.travelerNumber} person</td>
                             <td>${trip.budget}</td>
                             <td>{trip.hotel.name}</td>
                             <td>
-                                <button onClick={() => updateTrip(trip._id, updateTrip)}>Edit</button> |
+                                {/* <button onClick={() => updateTrip(trip._id, updateTrip)}>Edit</button> | */}
+                                <button>Edit</button> |
                                 <button onClick={() => deleteTrip(trip._id)}>Delete</button>
                             </td>
                         </tr>
