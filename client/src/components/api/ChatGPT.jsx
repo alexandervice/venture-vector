@@ -40,9 +40,9 @@ const ChatGPT = (props) => {
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/chat`, messageData, {withCredentials: true});
 
-      if(!JSON.parse(response.data.text)) {
-        throw new Error('Invalid response data');
-      }
+      // if(!JSON.parse(response.data.text)) {
+      //   throw new Error('Invalid response data');
+      // }
       const chatGPTResponse = JSON.parse(response.data.text);
       console.log("Chat GPT has responded: ",chatGPTResponse)
       setTripData(prevState => ({
@@ -56,7 +56,7 @@ const ChatGPT = (props) => {
       // hotel
       const hotelId = await getOnePlaceId(`${chatGPTResponse.hotel.name}, ${chatGPTResponse.hotel.address}`)
       if(!hotelId) {
-        throw new Error('Google API Failure');
+        throw new Error('Cannot Find Hotel');
       }
       const hotelDetails = await getPlaceDetails(hotelId)
       if(!hotelDetails) {

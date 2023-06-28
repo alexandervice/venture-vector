@@ -15,9 +15,9 @@ const PlaceSchema = new mongoose.Schema({
 })
 
 const TripSchema = mongoose.Schema({
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Users',
     },
     location: {
         type: String,

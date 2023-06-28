@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 const Trips = ({ user, show }) => {
     const [trips, setTrips] = useState([]);
     const userO = JSON.parse(localStorage.getItem("usertoken"))
-    console.log("userO:", userO);
+    // console.log("userO:", userO);
 
     useEffect(() => {
         console.log("user in trips.js", user);

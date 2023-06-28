@@ -73,7 +73,7 @@ const RegForm = ({setViewSignIn, user, setUser}) => {
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input type="password" required className="form-input mb-5 ml-2 py-0 px-1 dark:text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 w-full" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" onChange={changeHandler}/>
           </div>
-          <button onClick={handleClose} className="mr-5 bg-yellow-200 hover:bg-yellow-300 rounded px-1 border-solid border-2 border-yellow-400 dark:text-black">Cancel</button>
+          <button type='button' onClick={handleClose} className="mr-5 bg-yellow-200 hover:bg-yellow-300 rounded px-1 border-solid border-2 border-yellow-400 dark:text-black">Cancel</button>
           <button type="submit" className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400  dark:bg-green-800 dark:hover:bg-green-700">Register</button>
           
         </form>
