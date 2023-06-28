@@ -4,16 +4,16 @@ import dayjs from 'dayjs';
 
 const Trips = ({ user, show }) => {
     const [trips, setTrips] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null);
+    const [updatedTrip, setUpdatedTrip] = useState(null);
+
     const userO = JSON.parse(localStorage.getItem("usertoken"))
-    console.log("userO:", userO);
 
     useEffect(() => {
-        console.log("user in trips.js", user);
-        console.log("trips in trips.js", trips);
         if (user) {
             axios.get(`${process.env.REACT_APP_API_URL}/api/trips`, { withCredentials: true })
                 .then(res => {
-                    console.log('res data in trips.js:', res.data);
                     setTrips(res.data || []);
                 })
                 .catch(err => {
@@ -22,6 +22,22 @@ const Trips = ({ user, show }) => {
         }
     }, [user]);
 
+    const handleEdit = (trip) => {
+        setIsEditing(true);
+        setEditId(trip._id);
+        setUpdatedTrip(JSON.parse(JSON.stringify(trip)));
+    }
+
+    const handleUpdate = (id) => {
+        updateTrip(id, updatedTrip);
+        setIsEditing(false);
+        setEditId(null);
+    }
+
+    const handleCancel = () => {
+        setIsEditing(false);
+        setEditId(null);
+    }
 
     const updateTrip = (id, updatedTrip) => {
         axios
@@ -29,8 +45,6 @@ const Trips = ({ user, show }) => {
             .then(response => {
                 const updatedTrips = trips.map(trip => trip._id === id ? response.data : trip);
                 setTrips(updatedTrips);
-                console.log('Trip updated:', response.data);
-
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -43,7 +57,6 @@ const Trips = ({ user, show }) => {
             .then(response => {
                 const remainingTrips = trips.filter(trip => trip._id !== id);
                 setTrips(remainingTrips);
-                console.log('Trip deleted:', response.data);
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -59,24 +72,45 @@ const Trips = ({ user, show }) => {
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Traveler Number</th>
-                        <th>Budget</th>
+                        <th>Budget Range (1-5)</th>
                         <th>Hotel</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {trips && trips.map((trip) => (
-                        <tr key={trip.location}>
+                        <tr key={trip._id}>
                             <td>{trip.location}</td>
-                            <td>{dayjs(trip.startDate).format('MM/DD/YYYY')}</td>
-                            <td>{dayjs(trip.endDate).format('MM/DD/YYYY')}</td>
-                            <td>{trip.travelerNumber} person</td>
-                            <td>${trip.budget}</td>
+                            <td>
+                                {isEditing && editId === trip._id
+                                    ? <input type="date" value={dayjs(updatedTrip.startDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, startDate: e.target.value })} />
+                                    : dayjs(trip.startDate).format('MM/DD/YYYY')}
+                            </td>
+                            <td>
+                                {isEditing && editId === trip._id
+                                    ? <input type="date" value={dayjs(updatedTrip.endDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, endDate: e.target.value })} />
+                                    : dayjs(trip.endDate).format('MM/DD/YYYY')}
+                            </td>
+                            <td>
+                                {isEditing && editId === trip._id
+                                    ? <input type="number" value={updatedTrip.travelerNumber} onChange={e => setUpdatedTrip({ ...updatedTrip, travelerNumber: e.target.value })} />
+                                    : `${trip.travelerNumber} person`}
+                            </td>
+                            <td>{trip.budget}</td>
                             <td>{trip.hotel.name}</td>
                             <td>
-                                {/* <button onClick={() => updateTrip(trip._id, updateTrip)}>Edit</button> | */}
-                                <button>Edit</button> |
-                                <button onClick={() => deleteTrip(trip._id)}>Delete</button>
+                                {isEditing && editId === trip._id
+                                    ? (
+                                        <>
+                                            <button onClick={() => handleUpdate(trip._id)}>Accept</button> |
+                                            <button onClick={handleCancel}>Cancel</button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button onClick={() => handleEdit(trip)}>Edit</button> |
+                                            <button onClick={() => deleteTrip(trip._id)}>Delete</button>
+                                        </>
+                                    )}
                             </td>
                         </tr>
                     ))}

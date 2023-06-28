@@ -30,6 +30,10 @@ a {
   cursor: pointer;
 }
 
+input {
+  color: black;
+}
+
 /* Navbar Styles */
 .navbar {
   position: fixed;

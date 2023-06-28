@@ -41,7 +41,7 @@ function App() {
   });
 
   return (
-    <div className=" App bg-image-light dark:bg-image-dark text-black dark:text-white flex flex-col align-center justify-center text-center">
+    <div className=" App bg-image-light dark:bg-image-dark text-white dark:text-white flex flex-col align-center justify-center text-center">
       <div className="background">
         <Navbar user={user} setUser={setUser} viewSignIn={viewSignIn} setViewSignIn={setViewSignIn} fullPageApi={{ moveTo: (page) => fullPageRef.current && fullPageRef.current.moveTo(page) }} activeSection={activeSection} />
         {viewSignIn ? <SignIn user={user} setUser={setUser} setViewSignIn={setViewSignIn} viewSignIn={viewSignIn} /> : <div></div>}

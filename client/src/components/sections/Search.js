@@ -70,7 +70,7 @@ const Search = ({ tripData, setTripData }) => {
 
     return (
         <Element className='section search my-5' name='search'>
-            <div>
+            <div className='p-5 bg-zinc-600/50 flex max-w-7xl flex-col'>
 
                 <h2 id='search'>Search page</h2>
 
@@ -128,9 +128,9 @@ const Search = ({ tripData, setTripData }) => {
                         />
                     </label>
                     <ChatGPT tripData={tripData} setTripData={setTripData} />
-                    {user ? 
-                    <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Save Trip</button>
-                    : <button disabled className="bg-red-200 rounded px-1 border-solid border-2 border-red-400 dark:bg-red-800 " type="submit">Please Sign In To Save Trip</button>
+                    {user ?
+                        <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Save Trip</button>
+                        : <button disabled className="bg-red-200 rounded px-1 border-solid border-2 border-red-400 dark:bg-red-800 " type="submit">Please Sign In To Save Trip</button>
                     }
 
                 </form>
