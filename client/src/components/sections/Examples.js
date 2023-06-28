@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Element } from 'react-scroll';
 import { getPlacePhoto } from '../api/Google';
 
+
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const Examples = ({ tripData }) => {
@@ -109,6 +110,7 @@ const Examples = ({ tripData }) => {
             </div>
         </Element>
     );
+
 }
 
 export default Examples;

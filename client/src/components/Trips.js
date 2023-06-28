@@ -21,6 +21,7 @@ const Trips = ({ user, show }) => {
         }
     }, [user, userO?._id]);
 
+
     const updateTrip = (id, updatedTrip) => {
         axios
             .patch(`${process.env.REACT_APP_API_URL}/api/trips/${id}`, updatedTrip, { withCredentials: true })
@@ -28,6 +29,7 @@ const Trips = ({ user, show }) => {
                 const updatedTrips = trips.map(trip => trip._id === id ? response.data : trip);
                 setTrips(updatedTrips);
                 console.log('Trip updated:', response.data);
+
             })
             .catch((error) => {
                 console.error('Error:', error);

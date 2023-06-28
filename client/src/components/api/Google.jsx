@@ -43,12 +43,15 @@ export const getPlacePhoto = async (photo_reference) => {
   try {
     // make sure to create a .env file and set:
     // REACT_APP_API_URL = "http://localhost:8000"
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/places/photo`, { photo_reference }, { withCredentials: true });
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/places/photo`, { photo_reference }, { withCredentials: true });
 
     return response
   } catch (error) {
     // Handle errors, such as displaying an error message to the user
     console.error(error);
+    return (
+      <p>Photo Reference: {photo_reference}</p>
+    )
   }
 };
 

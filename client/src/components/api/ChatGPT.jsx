@@ -62,11 +62,12 @@ const ChatGPT = (props) => {
       if(!hotelDetails) {
         throw new Error('Google API Failure');
       }
+      const hotelDescription = hotelDetails.details.editorial_summary?.overview || '';
       setTripData(prevState => ({
         ...prevState, 
         hotel: {
           name: hotelDetails.details.name,
-          description: hotelDetails.details.editorial_summary,
+          description: hotelDescription,
           address: hotelDetails.details.formatted_address,
           placeId: hotelId,
           mapLocation: {
@@ -85,9 +86,10 @@ const ChatGPT = (props) => {
         try {
           const restaurantId = await getOnePlaceId(`${restaurant.name}, ${restaurant.address}`);
           const restaurantDetails = await getPlaceDetails(restaurantId);
+          const restaurantDescription = restaurantDetails.details.editorial_summary?.overview || '';
           return {
             name: restaurantDetails.details.name,
-            description: restaurantDetails.details.editorial_summary,
+            description: restaurantDescription,
             address: restaurantDetails.details.formatted_address,
             placeId: restaurantId,
             mapLocation: {
@@ -120,9 +122,10 @@ const ChatGPT = (props) => {
         try {
           const placeId = await getOnePlaceId(`${place.name}, ${place.address}`);
           const placeDetails = await getPlaceDetails(placeId);
+          const placeDescription = placeDetails.details.editorial_summary?.overview || '';
           return {
             name: placeDetails.details.name,
-            description: placeDetails.details.editorial_summary,
+            description: placeDescription,
             address: placeDetails.details.formatted_address,
             placeId: placeId,
             mapLocation: {
