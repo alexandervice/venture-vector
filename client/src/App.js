@@ -9,7 +9,7 @@ import Trips from "./components/Trips";
 import SignIn from "./components/sections/SignIn";
 
 function App() {
-  const [user, setUser] = useState(true); // Set this value when the user logs in so we can know if they are logged in and what their info is
+  const [user, setUser] = useState(null); // Set this value when the user logs in so we can know if they are logged in and what their info is
   // if we would rather not useState for this we can also save the user info into local storage. This way we can keep them logged in until they choose to log out
   const checkToken = () => {
     if (localStorage.getItem('usertoken')) {
@@ -20,7 +20,8 @@ function App() {
   };
 
   useEffect(() => {
-    checkToken();
+    const userO = JSON.parse(localStorage.getItem("usertoken"));
+    setUser(userO);
   }, []);
 
   const fullPageRef = useRef();
@@ -48,7 +49,7 @@ function App() {
         <Search tripData={tripData} setTripData={setTripData} />
         <Examples tripData={tripData} />
         <About />
-        <Trips user={user} show={false} />
+        <Trips tripData={tripData} user={user} setUser={setUser} show={false} />
       </div>
     </div>
   );
