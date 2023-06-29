@@ -73,55 +73,58 @@ const Trips = ({ user, show }) => {
     }
 
     return (
-        <div className={`dropdown ${show ? 'show' : ''}`}>
+        <div className={`dropdown ${show ? 'show' : ''} mt-16`}>
             {detailsView
                 ? <MoreDetails trip={selectedTrip} onBack={() => setDetailsView(false)} />
                 : (
-                    <table>
-                        <thead>
+                    <table className='table-auto border border-slate-500'>
+                        <thead  className='text-xl text-center'>
                             <tr>
-                                <th>Location</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Traveler Number</th>
-                                <th>Budget Range (1-5)</th>
-                                <th>Hotel</th>
-                                <th>Actions</th>
+                                <th className='text-center border border-slate-200 bg-zinc-900 py-3'>Location</th>
+                                <th className='text-center border border-slate-200 bg-zinc-900 py-3'>Start Date</th>
+                                <th className='text-center border border-slate-200 bg-zinc-900 py-3'>End Date</th>
+                                <th className='text-center border border-slate-200 bg-zinc-900 py-3'>Travelers</th>
+                                <th className='text-center border border-slate-200 bg-zinc-900 py-3'>Budget Range</th>
+                                <th className='text-center border border-slate-200 bg-zinc-900 py-3'>Hotel</th>
+                                <th className='text-center border border-slate-200 bg-zinc-900 py-3'>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {trips && trips.map((trip) => (
-                                <tr key={trip._id}>
-                                    <td className="text-2xl font-medium text-green-500">{trip.location}</td>
-                                    <td>
+                                <tr  className='hover:bg-blue-400/10' key={trip._id}>
+                                    <td className="text-2xl font-medium text-green-500 text-center">{trip.location}</td>
+                                    <td className='text-center'>
                                         {isEditing && editId === trip._id
                                             ? <input type="date" value={dayjs(updatedTrip.startDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, startDate: e.target.value })} />
                                             : dayjs(trip.startDate).format('MM/DD/YYYY')}
                                     </td>
-                                    <td>
+                                    <td className='text-center'>
                                         {isEditing && editId === trip._id
                                             ? <input type="date" value={dayjs(updatedTrip.endDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, endDate: e.target.value })} />
                                             : dayjs(trip.endDate).format('MM/DD/YYYY')}
                                     </td>
-                                    <td>
+                                    <td className='text-center'>
                                         {isEditing && editId === trip._id
                                             ? <input type="number" value={updatedTrip.travelerNumber} onChange={e => setUpdatedTrip({ ...updatedTrip, travelerNumber: e.target.value })} />
                                             : `${trip.travelerNumber} person`}
                                     </td>
-                                    <td>{trip.budget}</td>
-                                    <td>{trip.hotel.name}</td>
-                                    <td>
+                                    <td className='text-center'>{"$".repeat(trip.budget)}</td>
+                                    <td className='text-center'>{trip.hotel.name}</td>
+                                    <td className='text-center'>
                                         {isEditing && editId === trip._id
                                             ? (
                                                 <>
-                                                    <button onClick={() => handleUpdate(trip._id)}>Accept</button> |
-                                                    <button onClick={handleCancel}>Cancel</button>
+                                                    <button className='hover:text-green-500' onClick={() => handleUpdate(trip._id)}>Accept</button>
+                                                    <span className='mx-2'>|</span>
+                                                    <button className='hover:text-yellow-400' onClick={handleCancel}>Cancel</button>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <button className='text-green-500' onClick={() => { handleMoreDetails(trip); setDetailsView(true); }}>More Details</button>
-                                                    <button className='text-yellow-400' onClick={() => handleEdit(trip)}> | Edit |</button>
-                                                    <button className='text-red-600' onClick={() => deleteTrip(trip._id)}> | Delete|</button>
+                                                    <button className='hover:text-green-500' onClick={() => { handleMoreDetails(trip); setDetailsView(true); }}>More Details</button>
+                                                    <span className='mx-2'>|</span>
+                                                    <button className='hover:text-yellow-400' onClick={() => handleEdit(trip)}>  Edit </button>
+                                                    <span className='mx-2'>|</span>
+                                                    <button className='hover:text-red-600' onClick={() => deleteTrip(trip._id)}>  Delete</button>
                                                 </>
                                             )}
                                     </td>
