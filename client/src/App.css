@@ -89,15 +89,15 @@ input {
 /* Logo */
 .venture {
   color: yellow;
-  position: relative;
-  left: 20px;
+  /* position: relative;
+  left: 20px; */
 }
 
 .vector {
   color: green;
-  position: absolute;
-  top: 80px;
-  left: 20px;
+  /* position: absolute;
+  bottom: 0px;
+  left: 100px; */
 }
 
 
