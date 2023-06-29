@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import MoreDetails from './sections/MoreDetails';
 
 const Trips = ({ user, show }) => {
     const [trips, setTrips] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState(null);
     const [updatedTrip, setUpdatedTrip] = useState(null);
+    const [showDetails, setShowDetails] = useState(false);
+    const [selectedTrip, setSelectedTrip] = useState(null);
+    const [detailsView, setDetailsView] = useState(false); //More Details
 
     const userO = JSON.parse(localStorage.getItem("usertoken"))
 
     useEffect(() => {
+        console.log("user in trips.js:", user);
         if (user) {
-            axios.get(`${process.env.REACT_APP_API_URL}/api/trips`, { withCredentials: true })
+            axios.get(`${process.env.REACT_APP_API_URL}/api/trips/user`, { withCredentials: true })
                 .then(res => {
                     setTrips(res.data || []);
                 })
@@ -21,6 +26,10 @@ const Trips = ({ user, show }) => {
                 });
         }
     }, [user]);
+
+    const handleMoreDetails = (trip) => {
+        setSelectedTrip(trip);
+    }
 
     const handleEdit = (trip) => {
         setIsEditing(true);
@@ -65,59 +74,65 @@ const Trips = ({ user, show }) => {
 
     return (
         <div className={`dropdown ${show ? 'show' : ''}`}>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Location</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Traveler Number</th>
-                        <th>Budget Range (1-5)</th>
-                        <th>Hotel</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {trips && trips.map((trip) => (
-                        <tr key={trip._id}>
-                            <td>{trip.location}</td>
-                            <td>
-                                {isEditing && editId === trip._id
-                                    ? <input type="date" value={dayjs(updatedTrip.startDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, startDate: e.target.value })} />
-                                    : dayjs(trip.startDate).format('MM/DD/YYYY')}
-                            </td>
-                            <td>
-                                {isEditing && editId === trip._id
-                                    ? <input type="date" value={dayjs(updatedTrip.endDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, endDate: e.target.value })} />
-                                    : dayjs(trip.endDate).format('MM/DD/YYYY')}
-                            </td>
-                            <td>
-                                {isEditing && editId === trip._id
-                                    ? <input type="number" value={updatedTrip.travelerNumber} onChange={e => setUpdatedTrip({ ...updatedTrip, travelerNumber: e.target.value })} />
-                                    : `${trip.travelerNumber} person`}
-                            </td>
-                            <td>{trip.budget}</td>
-                            <td>{trip.hotel.name}</td>
-                            <td>
-                                {isEditing && editId === trip._id
-                                    ? (
-                                        <>
-                                            <button onClick={() => handleUpdate(trip._id)}>Accept</button> |
-                                            <button onClick={handleCancel}>Cancel</button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <button onClick={() => handleEdit(trip)}>Edit</button> |
-                                            <button onClick={() => deleteTrip(trip._id)}>Delete</button>
-                                        </>
-                                    )}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {detailsView
+                ? <MoreDetails trip={selectedTrip} onBack={() => setDetailsView(false)} />
+                : (
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Traveler Number</th>
+                                <th>Budget Range (1-5)</th>
+                                <th>Hotel</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {trips && trips.map((trip) => (
+                                <tr key={trip._id}>
+                                    <td>{trip.location}</td>
+                                    <td>
+                                        {isEditing && editId === trip._id
+                                            ? <input type="date" value={dayjs(updatedTrip.startDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, startDate: e.target.value })} />
+                                            : dayjs(trip.startDate).format('MM/DD/YYYY')}
+                                    </td>
+                                    <td>
+                                        {isEditing && editId === trip._id
+                                            ? <input type="date" value={dayjs(updatedTrip.endDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, endDate: e.target.value })} />
+                                            : dayjs(trip.endDate).format('MM/DD/YYYY')}
+                                    </td>
+                                    <td>
+                                        {isEditing && editId === trip._id
+                                            ? <input type="number" value={updatedTrip.travelerNumber} onChange={e => setUpdatedTrip({ ...updatedTrip, travelerNumber: e.target.value })} />
+                                            : `${trip.travelerNumber} person`}
+                                    </td>
+                                    <td>{trip.budget}</td>
+                                    <td>{trip.hotel.name}</td>
+                                    <td>
+                                        {isEditing && editId === trip._id
+                                            ? (
+                                                <>
+                                                    <button onClick={() => handleUpdate(trip._id)}>Accept</button> |
+                                                    <button onClick={handleCancel}>Cancel</button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <button onClick={() => { handleMoreDetails(trip); setDetailsView(true); }}>More Details</button>
+                                                    <button onClick={() => handleEdit(trip)}> | Edit |</button>
+                                                    <button onClick={() => deleteTrip(trip._id)}> | Delete|</button>
+                                                </>
+                                            )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
         </div>
     );
 };
+
 
 export default Trips;

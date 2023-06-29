@@ -5,7 +5,6 @@ const createTrip = (req, res) => {
     Trip.create(req.body.tripData)
         .then(newTrip => {
             res.json({ newTrip });
-            console.log("newTrip in createTrip:", newTrip)
         })
         .catch((err) => {
             console.log(err);
@@ -14,7 +13,7 @@ const createTrip = (req, res) => {
 };
 
 const getAllTrips = (req, res) => {
-    Trip.find()
+    Trip.find().sort({ startDate: 1 })
         .then((allTrips) => {
             res.json(allTrips);
         })
@@ -24,11 +23,9 @@ const getAllTrips = (req, res) => {
 };
 
 const getTripsByUser = (req, res) => {
-    console.log("req in trip controller".req)
-    console.log("req.params.userid", req.params.userid)
-    Trip.find({ userId: req.user._id })
+    // console.log("req.userId in getTripsByUser", req.userId);
+    Trip.find({ user: req.userId }).sort({ startDate: 1 })
         .then((allTrips) => {
-            console.log("allTrips in getTripsByUser:", allTrips);
             res.json(allTrips);
         })
         .catch((err) => {
