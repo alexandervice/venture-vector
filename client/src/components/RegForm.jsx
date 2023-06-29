@@ -51,7 +51,7 @@ const RegForm = ({setViewSignIn, user, setUser}) => {
       <div className="row">
         <form action="" className="col-med-4 offset-2 pt-5" onSubmit={submitHandler}>
           {errors.map((err, index) => 
-          <p className='error' key={index}>{err}</p>
+          <p className='error text-red-400' key={index}>{err}</p>
           )}
           <div className="form-group">
             <label htmlFor="firstName">First Name</label>
