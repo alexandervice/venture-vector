@@ -73,7 +73,7 @@ const Trips = ({ user, show }) => {
     }
 
     return (
-        <div className={`dropdown ${show ? 'show' : ''} mt-16`}>
+        <div className={`dropdown ${show ? 'show' : ''} mt-16 `}>
             {detailsView
                 ? <MoreDetails trip={selectedTrip} onBack={() => setDetailsView(false)} />
                 : (

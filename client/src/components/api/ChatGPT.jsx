@@ -166,13 +166,13 @@ const ChatGPT = (props) => {
   return (
     <div>
       {loading?
-      <div>
+      <div className='text-3xl text-red-500'>
         please wait
       </div> :
       <div>
         {messageReceived ?
         <button disabled type='button'></button> :
-        <button className='bg-yellow-200 hover:bg-yellow-300 rounded px-3 border-solid border-2 border-yellow-400 dark:text-black dark:hover:bg-yellow-200 dark:bg-yellow-300 dark:border-yellow-400 text-2xl' type='button' onClick={() => chatgptWithGoogleResponse()}>Plan My Trip</button>
+        <button className='bg-yellow-200 hover:bg-yellow-300 rounded px-3 text-black border-solid border-2 border-yellow-400 dark:text-black dark:hover:bg-yellow-200 dark:bg-yellow-300 dark:border-yellow-400 text-2xl' type='button' onClick={() => chatgptWithGoogleResponse()}>Plan My Trip</button>
         }
       </div>
       }

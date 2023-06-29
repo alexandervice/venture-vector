@@ -86,7 +86,7 @@ const Search = ({ tripData, setTripData }) => {
             <AsyncSelect
               required
               cacheOptions
-              className='dark:text-black'
+              className='text-black'
               loadOptions={loadOptions}
               getOptionValue={option => option.value}
               getOptionLabel={option => option.label}
@@ -98,7 +98,7 @@ const Search = ({ tripData, setTripData }) => {
             Start Date:
             <input
               required
-              className='dark:text-black'
+              className='text-black'
               type="date"
               value={tripData.startDate}
               onChange={(e) => {
@@ -111,7 +111,7 @@ const Search = ({ tripData, setTripData }) => {
             End Date:
             <input
               required
-              className='dark:text-black'
+              className='text-black'
               type="date"
               value={tripData.endDate}
               onChange={(e) => {
@@ -124,7 +124,7 @@ const Search = ({ tripData, setTripData }) => {
             Traveler Number:
             <input
               required
-              className='dark:text-black'
+              className='text-black'
               type="number"
               min={1}
               max={5}
@@ -148,7 +148,7 @@ const Search = ({ tripData, setTripData }) => {
           {!user && <div className="error text-red-400">Must be Signed In</div>}
           {isFormValid(tripData) && !dateError && <ChatGPT tripData={tripData} setTripData={setTripData} setLoading={setLoading} loading={loading} />}
           {user && isFormValid(tripData) && !dateError && !loading ?
-            <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700" type="submit">Save Trip</button>
+            <button className="bg-green-200 hover:bg-green-300 rounded px-1 border-solid border-2 border-green-400 dark:bg-green-800 dark:hover:bg-green-700 text-black" type="submit">Save Trip</button>
             : ""
           }
 
