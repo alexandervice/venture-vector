@@ -3,17 +3,17 @@ import { Element } from 'react-scroll';
 
 const About = () => {
     return (
-        <Element name='about' className='section'>
+        <Element name='about' className='section' style={{ height: '120vh' }}>
             <div className='p-5 bg-zinc-600/50 flex max-w-7xl flex-col'>
-                <h2>About Venture Vector</h2>
+                <h2 className="text-2xl font-medium text-yellow-300 my-5">About Venture Vector</h2>
                 <p>
-                    Venture Vector is an immersive full-stack application developed by Alexander Vice and Nandor Nagy. This innovative project was born out of the rigorous Coding Dojo Bootcamp, reflecting the expansive skillset we acquired over a 6-month learning journey. Designed to demonstrate our expertise, Venture Vector leverages a diverse array of technical resources, intertwining frontend and backend programming to create an engaging user experience.
+                    VentureVector is an immersive full-stack application developed by <span className="text-2xl font-medium text-green-500">Alexander Vice</span>  and <span span className="text-2xl font-medium text-green-500">Nandor Nagy</span> . This innovative project was born out of the rigorous Coding Dojo Bootcamp, reflecting the expansive skillset we acquired over a 6-month learning journey. Designed to demonstrate our expertise, Venture Vector leverages a diverse array of technical resources, intertwining frontend and backend programming to create an engaging user experience.
                 </p>
-                <h2>Technologies Used</h2>
+                <h2 className="text-2xl font-medium text-yellow-300 my-5">Technologies Used</h2>
                 <p>
                     In developing Venture Vector, we've utilized the MERN stack (MongoDB, Express.js, React.js, Node.js) to ensure smooth, seamless functionality. For the frontend, technologies such as "axios", "react-router-dom", "react-scroll", "react-spring", and "react-toggle-dark-mode", amongst others, were incorporated to ensure an interactive and responsive user interface. On the backend, our application is supported by technologies like "axios", "bcrypt", "body-parser", "cookie-parser", "express", "jsonwebtoken", "mongoose", and "validator" to manage data securely and efficiently.
                 </p>
-                <h2>How Does It Work?</h2>
+                <h2 className="text-2xl font-medium text-yellow-300 my-5">How Does It Work?</h2>
                 <p>
                     Venture Vector is all about providing a customized travel experience. It starts with users filling out a simple form, providing us with information about the city they intend to visit, their travel dates, the number of travelers, and their budget. Upon clicking the "Plan My Trip" button, this data is then sent to ChatGPT, which uses it to generate a tailored trip itinerary.
                 </p>
@@ -23,7 +23,7 @@ const About = () => {
                 <p>
                     Once this enriched data is sent back to our frontend, we present the user with a comprehensive, personalized travel plan. If users are logged in, they can save this itinerary to our MongoDB database for future reference, allowing them to revisit and adjust their plans as needed.
                 </p>
-                <h2>User Interactions and Single Page Application</h2>
+                <h2 className="text-2xl font-medium text-yellow-300 my-5">User Interactions and Single Page Application</h2>
                 <p>
                     In addition to planning trips, Venture Vector also provides a range of user interaction possibilities. Users can navigate to a page where their past trips are saved and perform basic CRUD operations. They can update their trips, perhaps adjusting their budget or adding new sights to their itinerary, or they can delete trips if plans change.
                 </p>

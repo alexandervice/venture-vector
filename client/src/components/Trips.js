@@ -92,7 +92,7 @@ const Trips = ({ user, show }) => {
                         <tbody>
                             {trips && trips.map((trip) => (
                                 <tr key={trip._id}>
-                                    <td>{trip.location}</td>
+                                    <td className="text-2xl font-medium text-green-500">{trip.location}</td>
                                     <td>
                                         {isEditing && editId === trip._id
                                             ? <input type="date" value={dayjs(updatedTrip.startDate).format('YYYY-MM-DD')} onChange={e => setUpdatedTrip({ ...updatedTrip, startDate: e.target.value })} />
@@ -119,9 +119,9 @@ const Trips = ({ user, show }) => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <button onClick={() => { handleMoreDetails(trip); setDetailsView(true); }}>More Details</button>
-                                                    <button onClick={() => handleEdit(trip)}> | Edit |</button>
-                                                    <button onClick={() => deleteTrip(trip._id)}> | Delete|</button>
+                                                    <button className='text-green-500' onClick={() => { handleMoreDetails(trip); setDetailsView(true); }}>More Details</button>
+                                                    <button className='text-yellow-400' onClick={() => handleEdit(trip)}> | Edit |</button>
+                                                    <button className='text-red-600' onClick={() => deleteTrip(trip._id)}> | Delete|</button>
                                                 </>
                                             )}
                                     </td>

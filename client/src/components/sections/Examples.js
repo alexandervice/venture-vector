@@ -11,9 +11,9 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 const Examples = ({ tripData }) => {
     // console.log(tripData);
     return (
-        <Element className='section examples' name='examples'>
+        <Element className='section examples my-5' name='examples' style={{ height: '60vh' }}>
             <div className='p-5 bg-zinc-600/50 flex max-w-7xl flex-col'>
-                <h2>Travel Information</h2>
+                <h2 className="text-2xl font-medium text-yellow-300 mb-7">Trip Information:</h2>
                 <Tabs>
                     <TabList>
                         <Tab>Trip Data</Tab>
@@ -39,7 +39,7 @@ const Examples = ({ tripData }) => {
                                         alt={`${tripData.city.name} #${photo.photoIndex}`}
                                     />
                                 </div>
-                              ))}
+                            ))}
                         </Carousel>
                     </TabPanel>
 
@@ -64,7 +64,7 @@ const Examples = ({ tripData }) => {
 
                     <TabPanel>
                         <h2>Restaurants</h2>
-                            <Tabs>
+                        <Tabs>
                             <TabList>
                                 {tripData.restaurants.map((restaurant, index) => (
                                     <Tab key={index}>Restaurant {index + 1}</Tab>
@@ -77,7 +77,7 @@ const Examples = ({ tripData }) => {
                                     <p>Description: {restaurant.description}</p>
                                     <p>Rating: {restaurant.rating}</p>
                                     <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
-                                        { restaurant.photos && restaurant.photos.map((photo, photoIndex) => (
+                                        {restaurant.photos && restaurant.photos.map((photo, photoIndex) => (
                                             <div key={photoIndex} className=''>
                                                 <img
                                                     className=''
@@ -89,7 +89,7 @@ const Examples = ({ tripData }) => {
                                     </Carousel>
                                 </TabPanel>
                             ))}
-                            </Tabs>
+                        </Tabs>
                     </TabPanel>
 
                     <TabPanel>
@@ -108,14 +108,14 @@ const Examples = ({ tripData }) => {
                                     <p>Rating: {place.rating}</p>
                                     <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                                         {place.photos && place.photos.map((photo, photoIndex) => (
-                                              <div key={photoIndex} className=''>
-                                              <img
-                                                  className=''
-                                                  src={`https://maps.googleapis.com/maps/api/place/photo?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&photo_reference=${photo.photo_reference}&maxwidth=800&maxheight=800`}
-                                                  alt={`${tripData.city.name} #${photo.photoIndex}`}
-                                              />
-                                          </div>
-                                            ))}
+                                            <div key={photoIndex} className=''>
+                                                <img
+                                                    className=''
+                                                    src={`https://maps.googleapis.com/maps/api/place/photo?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&photo_reference=${photo.photo_reference}&maxwidth=800&maxheight=800`}
+                                                    alt={`${tripData.city.name} #${photo.photoIndex}`}
+                                                />
+                                            </div>
+                                        ))}
                                     </Carousel>
                                 </TabPanel>
                             ))}
