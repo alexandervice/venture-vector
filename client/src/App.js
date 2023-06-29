@@ -40,9 +40,14 @@ function App() {
         {viewSignIn ? <SignIn user={user} setUser={setUser} setViewSignIn={setViewSignIn} viewSignIn={viewSignIn} /> : <div></div>}
         <Hero />
         <Search tripData={tripData} setTripData={setTripData} />
+        <div className="h-96"></div>
         <Examples tripData={tripData} />
+        <div className="h-96"></div>
         <About />
         <Trips tripData={tripData} user={user} setUser={setUser} show={false} />
+        <div className="h-96"></div>
+        <div className="h-96"></div>
+        <div className="h-96"></div>
       </div>
     </div>
   );
