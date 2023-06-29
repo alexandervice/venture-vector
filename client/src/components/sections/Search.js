@@ -76,9 +76,9 @@ const Search = ({ tripData, setTripData }) => {
 
 
   return (
-    <Element className='section search my-5' name='search'>
-      <div className='p-5 bg-zinc-600/50 flex max-w-7xl flex-col'>
-        <h2 id='search'>Search page</h2>
+    <Element className='section search my-5 mt-8' name='search' style={{ height: '60vh' }}>
+      <div className='p-5 bg-zinc-600/50 flex max-w-7xl flex-col' >
+        <h2 id='search' className="text-2xl font-medium text-yellow-300 mb-7">Start Your Search:</h2>
 
         <form onSubmit={handleSubmit}>
           <label>

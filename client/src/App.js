@@ -11,13 +11,6 @@ import SignIn from "./components/sections/SignIn";
 function App() {
   const [user, setUser] = useState(null); // Set this value when the user logs in so we can know if they are logged in and what their info is
   // if we would rather not useState for this we can also save the user info into local storage. This way we can keep them logged in until they choose to log out
-  // const checkToken = () => {
-  //   if (localStorage.getItem('usertoken')) {
-  //     setUser(true);
-  //   } else {
-  //     setUser(false);
-  //   }
-  // };
 
   useEffect(() => {
     const userO = JSON.parse(localStorage.getItem("usertoken"));

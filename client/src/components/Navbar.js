@@ -59,7 +59,7 @@ const Navbar = ({ user, setUser, viewSignIn, setViewSignIn }) => {
         <>
             {transition((style, item) => (
                 <animated.div className={`navbar ${item ? 'vertical' : 'horizontal'}`} style={style}>
-                    <h1>
+                    <h1 className="text-2xl font-bold">
                         <span className='venture'>Venture</span>
                         <span className='vector'>Vector</span>
                     </h1>
