@@ -58,28 +58,28 @@ const Navbar = ({ user, setUser, viewSignIn, setViewSignIn }) => {
     return (
         <>
             {transition((style, item) => (
-                <animated.div className={`navbar ${item ? 'vertical' : 'horizontal'}`} style={style}>
-                    <h1 className="text-2xl font-bold">
+                <animated.div className={`navbar ${item ? 'vertical' : 'horizontal'} bg-zinc-900/80`} style={style}>
+                    <h1 className="text-3xl font-bold">
                         <span className='venture'>Venture</span>
                         <span className='vector'>Vector</span>
                     </h1>
-                    <Link to='hero' spy={true} smooth={true} duration={500}>Home</Link>
-                    <Link to='search' spy={true} smooth={true} duration={500}>Search</Link>
-                    <Link to='examples' spy={true} smooth={true} duration={500}>Examples</Link>
-                    <Link to='about' spy={true} smooth={true} duration={500}>About</Link>
+                    <Link className='text-2xl' to='hero' spy={true} smooth={true} duration={500}>Home</Link>
+                    <Link className='text-2xl' to='search' spy={true} smooth={true} duration={500}>Search</Link>
+                    <Link className='text-2xl' to='examples' spy={true} smooth={true} duration={500}>Examples</Link>
+                    <Link className='text-2xl' to='about' spy={true} smooth={true} duration={500}>About</Link>
                     {user ? (
                         <>
-                            <Link to='trips' spy={true} smooth={true} duration={500} onClick={() => setShowDropdown(!showDropdown)}>Trips</Link>
+                            <Link className='text-2xl' to='trips' spy={true} smooth={true} duration={500} onClick={() => setShowDropdown(!showDropdown)}>Trips</Link>
                             {showDropdown && <div ref={dropdownRef}><Trips user={user} setUser={setUser} show={showDropdown} /></div>}
                             <button
-                                className='text-yellow-400'
+                                className='text-yellow-400 text-2xl'
                                 onClick={handleLogout}>
                                 Logout
                             </button>
                         </>
                     ) : (
                         // <Link to='login' spy={true} smooth={true} onClick={setViewSignIn(true)} duration={500}>Sign in</Link>
-                        <button className='' type='button' onClick={handleViewSignIn}>Login / Register</button>
+                        <button  className='text-2xl' type='button' onClick={handleViewSignIn}>Login / Register</button>
                     )}
                     {/* Switcher is the dark/light mode button */}
                     <Switcher />

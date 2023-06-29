@@ -5,7 +5,7 @@ import logo from "../logo.jpg"
 const Hero = () => {
     return (
         <Element name='hero' className='section h-screen flex items-center justify-center'>
-            <div className='p-5 bg-zinc-600/80 max-w-7xl w-screen sm:w-4/5 flex flex-col items-center'>
+            <div className='p-5 bg-zinc-900/80 max-w-7xl w-screen sm:w-4/5 flex flex-col items-center'>
                 <div className='mt-10 sm:mt-0' style={{ height: '10vh' }}></div>
                 <div className='flex items-center justify-center'>
                     <img className='max-w-full max-h-full' src={logo} alt='logo' />

@@ -5,8 +5,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 const MoreDetails = ({ trip, onBack }) => {
     return (
-        <div>
-            <button onClick={onBack}>Back</button>
+        <div className='p-5 flex flex-col'>
+            <button className='text-3xl border-b mb-5 px-3 pb-3 hover:text-yellow-500'  onClick={onBack}>Back</button>
 
             <Tabs>
                 <TabList>
@@ -17,12 +17,15 @@ const MoreDetails = ({ trip, onBack }) => {
                 </TabList>
 
                 <TabPanel>
-                    <p>Location: {trip.location}</p>
-                    <p>Start Date: {dayjs(trip.startDate).format('MM/DD/YYYY')}</p>
-                    <p>End Date: {dayjs(trip.endDate).format('MM/DD/YYYY')}</p>
-                    <p>Number of Travelers: {trip.travelerNumber}</p>
-                    <p>Budget: {trip.budget}</p>
-                    <p>Itinerary: {trip.itinerary}</p>
+                    <div className="flex flex-col justify-center items-center">
+                      <p className='text-5xl font-bold my-3 text-green-500'>{trip.location}</p>
+                      <p>{dayjs(trip.startDate).format('MM/DD/YYYY')} - {dayjs(trip.endDate).format('MM/DD/YYYY')}</p>
+                      <div className='flex space-x-4'>
+                        <p>{trip.travelerNumber} Traveler(s)</p>
+                        <p>{"$".repeat(trip.budget)}</p>
+                      </div>
+                    </div>
+                    <p className='text-sm px-20 text-left my-3 border-b pb-3'>{trip.itinerary}</p>
                     {/* <div className='flex flex-wrap justify-center gap-5'> */}
                     <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                         {trip.city.photos && trip.city.photos.map((photo, photoIndex) => (
@@ -38,11 +41,10 @@ const MoreDetails = ({ trip, onBack }) => {
                 </TabPanel>
 
                 <TabPanel>
-                    <h2>Hotel Information</h2>
-                    <p>Name: {trip.hotel.name}</p>
-                    <p>Description: {trip.hotel.description}</p>
-                    <p>Address: {trip.hotel.address}</p>
-                    <p>Rating: {trip.hotel.rating}</p>
+                    <p className='text-3xl font-bold mt-4 text-green-500'>{trip.hotel.name}</p>
+                    <p>{trip.hotel.address}</p>
+                    <p>Rating: {trip.hotel.rating} Stars</p>
+                    <p className='my-2 pb-4  border-b'>{trip.hotel.description}</p>
                     <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                         {trip.hotel.photos && trip.hotel.photos.map((photo, photoIndex) => (
                             <div key={photoIndex} className=''>
@@ -57,7 +59,6 @@ const MoreDetails = ({ trip, onBack }) => {
                 </TabPanel>
 
                 <TabPanel>
-                    <h2>Restaurants</h2>
                     <Tabs>
                         <TabList>
                             {trip.restaurants.map((restaurant, index) => (
@@ -66,10 +67,10 @@ const MoreDetails = ({ trip, onBack }) => {
                         </TabList>
                         {trip.restaurants.map((restaurant, index) => (
                             <TabPanel key={index}>
-                                <p>Name: {restaurant.name}</p>
-                                <p>Address: {restaurant.address}</p>
-                                <p>Description: {restaurant.description}</p>
-                                <p>Rating: {restaurant.rating}</p>
+                                <p className='text-3xl font-bold mt-4 text-green-500'>{restaurant.name}</p>
+                                <p>{restaurant.address}</p>
+                                <p>Rating: {restaurant.rating} Stars</p>
+                                <p className='my-2 pb-4  border-b'>{restaurant.description}</p>
                                 <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                                     {restaurant.photos && restaurant.photos.map((photo, photoIndex) => (
                                         <div key={photoIndex} className=''>
@@ -87,7 +88,6 @@ const MoreDetails = ({ trip, onBack }) => {
                 </TabPanel>
 
                 <TabPanel>
-                    <h2>Other Places</h2>
                     <Tabs>
                         <TabList>
                             {trip.otherPlaces.map((place, index) => (
@@ -96,10 +96,10 @@ const MoreDetails = ({ trip, onBack }) => {
                         </TabList>
                         {trip.otherPlaces.map((place, index) => (
                             <TabPanel key={index}>
-                                <p>Name: {place.name}</p>
-                                <p>Address: {place.address}</p>
-                                <p>Description: {place.description}</p>
-                                <p>Rating: {place.rating}</p>
+                                <p className='text-3xl font-bold mt-4 text-green-500'>{place.name}</p>
+                                <p>{place.address}</p>
+                                <p>Rating: {place.rating} Stars</p>
+                                <p className='my-2 pb-4  border-b'>{place.description}</p>
                                 <Carousel autoFocus dynamicHeight centerMode centerSlidePercentage={30} infiniteLoop showArrows>
                                     {place.photos && place.photos.map((photo, photoIndex) => (
                                         <div key={photoIndex} className=''>
@@ -116,7 +116,7 @@ const MoreDetails = ({ trip, onBack }) => {
                     </Tabs>
                 </TabPanel>
             </Tabs>
-            <button onClick={onBack}>Back</button>
+            <button className='text-3xl border-t mb-3 px-3 py-3 hover:text-yellow-500'  onClick={onBack}>Back</button>
         </div>
     );
 };
